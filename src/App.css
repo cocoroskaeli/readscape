@@ -1,0 +1,10 @@
+.nav {
+
+padding: 1.5em;
+color: black;
+}
+
+.bar{
+    position: fixed;
+    top: 0;
+}
