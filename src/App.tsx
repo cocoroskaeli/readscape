@@ -8,7 +8,6 @@ import './App.css'
         <Link className='nav' to='/'>Home</Link>
         <Link className='nav' to='/shelf'>My Shelf</Link>
       </nav>
-
       <Outlet />
     </div>
   );
