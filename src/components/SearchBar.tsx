@@ -1,10 +1,10 @@
 import { useState,useEffect } from "react";
-
+import './SearchBar.css'
 interface SearchBarProps{
-   OnSearch: (query: string) =>void;
+   onSearch: (query: string) =>void;
 }
 
-export default function SearchBar ({ OnSearch }: SearchBarProps)
+export default function SearchBar ({ onSearch }: SearchBarProps)
 {
    const [input,setInput]=useState("");
    
@@ -12,8 +12,8 @@ export default function SearchBar ({ OnSearch }: SearchBarProps)
       
     const handler=setTimeout(()=>{
         
-        OnSearch(input);
-    }, 1000);
+        onSearch(input);
+    }, 700);
 
     return ()=> clearTimeout(handler);
    },[input]);
@@ -21,6 +21,7 @@ export default function SearchBar ({ OnSearch }: SearchBarProps)
 
    return(
     <input type="text"
+    className="search-bar"
     placeholder="Search books..."
     value={input}
     onChange={(e)=>setInput(e.target.value)}

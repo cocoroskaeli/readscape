@@ -1,0 +1,5 @@
+.search-bar {
+  display: block;
+  margin-bottom: 2rem;
+  z-index: 10;
+}
