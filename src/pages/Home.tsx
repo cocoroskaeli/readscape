@@ -59,6 +59,7 @@ export default function Home ()
       {books.map((book) => (
         <BookCard
           key={book.key}
+          bookKey={book.key} 
           title={book.title}
           author={book.author_name?.[0] || "Unknown"}
           year={book.first_publish_year}
