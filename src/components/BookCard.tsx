@@ -13,6 +13,7 @@ interface BookCardProps {
 export default function BookCard({ title, author, year, coverId, bookKey }: BookCardProps) {
   const addBook = useShelfStore((state) => state.addBook);
   const removeBook = useShelfStore((state) => state.removeBook);
+  const lastAction = useShelfStore((state) => state.lastAction); 
 
   const coverUrl = coverId
     ? `https://covers.openlibrary.org/b/id/${coverId}-M.jpg`
@@ -22,23 +23,27 @@ export default function BookCard({ title, author, year, coverId, bookKey }: Book
     const book = { key: bookKey, title, author, year, coverId };
     addBook(status, book);
 
-    toast.success(
-      (t) => (
-        <span>
-          Added to <b>{status}</b>
-          <button
-            onClick={() => {
-              removeBook(status, bookKey);
-              toast.dismiss(t.id);
-            }}
-            style={{ marginLeft: "10px", color: "red" }}
-          >
-            Undo
-          </button>
-        </span>
-      ),
-      { duration: 4000 }
-    );
+    if (lastAction === "exists") {
+      toast.error("You already have this book in your shelf");
+    } else if (lastAction === "added") {
+      toast.success(
+        (t) => (
+          <span>
+            Added to <b>{status}</b>
+            <button
+              onClick={() => {
+                removeBook(status, bookKey);
+                toast.dismiss(t.id);
+              }}
+              style={{ marginLeft: "10px", color: "red" }}
+            >
+              Undo
+            </button>
+          </span>
+        ),
+        { duration: 4000 }
+      );
+    }
   };
 
   return (

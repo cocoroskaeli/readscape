@@ -1,7 +1,5 @@
-import { persist } from "zustand/middleware";
 import { create } from "zustand";
-
-type ShelfStatus = "want" | "reading" | "finished";
+import { persist } from "zustand/middleware";
 
 interface Book {
   key: string;
@@ -11,24 +9,45 @@ interface Book {
   coverId?: number;
 }
 
+interface Shelf {
+  want: Book[];
+  reading: Book[];
+  finished: Book[];
+}
+
 interface ShelfStore {
-  shelf: Record<ShelfStatus, Book[]>;
-  addBook: (status: ShelfStatus, book: Book) => void;
-  removeBook: (status: ShelfStatus, key: string) => void;
+  shelf: Shelf;
+  lastAction?: "added" | "exists";
+  addBook: (status: keyof Shelf, book: Book) => void;
+  removeBook: (status: keyof Shelf, key: string) => void;
 }
 
 export const useShelfStore = create<ShelfStore>()(
   persist(
-    (set) => ({
+    (set, get) => ({
       shelf: { want: [], reading: [], finished: [] },
+      lastAction: undefined,
 
-      addBook: (status, book) =>
+      addBook: (status, book) => {
+        const shelf = get().shelf;
+
+        const alreadyInShelf = Object.values(shelf)
+          .flat()
+          .some((b) => b.key === book.key);
+
+        if (alreadyInShelf) {
+          set({ lastAction: "exists" });
+          return;
+        }
+
         set((state) => ({
           shelf: {
             ...state.shelf,
             [status]: [...state.shelf[status], book],
           },
-        })),
+          lastAction: "added",
+        }));
+      },
 
       removeBook: (status, key) =>
         set((state) => ({
