@@ -1,30 +1,32 @@
 import { useState } from "react";
 import { useShelfStore } from "../store/shelfStore";
 import BookCard from "../components/BookCard";
+import { useTranslation } from "react-i18next";
 
-export default function Shelf() {
+export default function MyShelf() {
   const { shelf } = useShelfStore();
   const [activeTab, setActiveTab] = useState<"want" | "reading" | "finished">("want");
+  const { t } = useTranslation();
 
   const tabs = ["want", "reading", "finished"] as const;
 
   const renderBooks = (books: typeof shelf.want) =>
     books.length === 0
-      ? <p>No books yet</p>
+      ? <p>{t("noBooksYet")}</p>
       : books.map((book) => (
           <BookCard
             key={book.key}
             bookKey={book.key}
             title={book.title}
-            author={book.author || "Unknown Author"}
+            author={book.author || t("unknownAuthor")}
             year={book.year}
             coverId={book.coverId}
           />
         ));
 
   return (
-    <div className="p-4">
-      <h1 className="text-xl font-bold mb-4">📚 My Shelf</h1>
+    <div className="bg-white dark:bg-gray-800 text-black dark:text-white p-4">
+      <h1 className="text-xl font-bold mb-4">📚 {t("shelf")}</h1>
 
       <div className="flex gap-4 mb-4">
         {tabs.map((tab) => (
@@ -35,7 +37,7 @@ export default function Shelf() {
               activeTab === tab ? "bg-blue-500 text-white" : "bg-gray-200"
             }`}
           >
-            {tab.charAt(0).toUpperCase() + tab.slice(1)}
+            {t(tab)} {/* преведување на табовите */}
           </button>
         ))}
       </div>

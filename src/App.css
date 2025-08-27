@@ -1,7 +1,6 @@
 .nav {
 
 padding: 1.5em;
-color: black;
 }
 
 .bar{
@@ -16,7 +15,6 @@ color: black;
 }
 
 .book-card {
-  background: #fff;
   padding: 1rem;
   border-radius: 12px;
   text-align: center;

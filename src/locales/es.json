@@ -1,0 +1,18 @@
+{
+  "home" : "Hogar",
+  "search": "Buscar",
+  "shelf": "Mi Estantería",
+  "details": "Detalles",
+  "want": "Quiero",
+  "reading": "Leyendo",
+  "finished": "Terminado",
+  "undo": "Deshacer",
+  "alreadyInShelf": "Ya tienes este libro en tu estantería",
+  "addedTo": "Añadido a",
+  "searchPlaceholder": "Buscar libros...",
+   "noResults": "No se encontraron resultados",
+  "unknown": "Desconocido",
+  "noBooksYet": "Aún no hay libros",
+  "unknownAuthor": "Autor desconocido"
+
+}

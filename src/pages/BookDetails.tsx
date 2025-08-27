@@ -34,7 +34,7 @@ export default function BookDetails ()
   : "https://via.placeholder.com/150x200?text=No+Cover";
 
    return(
-    <div className="p-4">
+    <div className="p-4 bg-white dark:bg-gray-800 text-black dark:text-white p-4">
         <h1 className="text-2xl font bold">{book.title}</h1>
 
         <img src={coverUrl} alt={book.title} className="mb-4 w-48" />

@@ -1,0 +1,17 @@
+{
+  "home" : "Home",
+  "search": "Search",
+  "shelf": "My Shelf",
+  "details": "Details",
+  "want": "Want",
+  "reading": "Reading",
+  "finished": "Finished",
+  "undo": "Undo",
+  "alreadyInShelf": "You already have this book in your shelf",
+  "addedTo": "Added to",
+   "searchPlaceholder": "Search for books...",
+   "noResults": "No results found",
+  "unknown": "Unknown",
+   "noBooksYet": "No books yet",
+  "unknownAuthor": "Unknown Author"
+}
