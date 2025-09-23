@@ -1,44 +1,41 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import SearchBar from "../components/SearchBar";
 import BookCard from "../components/BookCard";
-import { searchBooks } from "../api";
-import { useTranslation } from "react-i18next";
+import { searchBooks, fetchTrending, fetchSubjectBooks } from "../api";
 import toast from "react-hot-toast";
+import { useTranslation } from "react-i18next";
 import "./Home.css";
 
 export default function Home() {
   const { t } = useTranslation();
-  const [books, setBooks] = useState<any[]>([]);
-  const [loading, setLoading] = useState(false);
+
+  const [searchResults, setSearchResults] = useState<any[]>([]);
+  const [loadingSearch, setLoadingSearch] = useState(false);
   const [lastQuery, setLastQuery] = useState("");
 
-  useEffect(() => {
-    try {
-      const saved = sessionStorage.getItem("lastSearch");
-      if (saved) {
-        const parsed = JSON.parse(saved);
-        setBooks(parsed.books || []);
-        setLastQuery(parsed.query || "");
-      }
-    } catch (err) {
-      console.error("Failed to parse sessionStorage lastSearch", err);
-      sessionStorage.removeItem("lastSearch");
-    }
-  }, []);
+  // категории
+  const [trending, setTrending] = useState<any[]>([]);
+  const [classics, setClassics] = useState<any[]>([]);
+  const [romance, setRomance] = useState<any[]>([]);
+  const [kids, setKids] = useState<any[]>([]);
+  const [thrillers, setThrillers] = useState<any[]>([]);
+  const [textbooks, setTextbooks] = useState<any[]>([]);
+  const [loadingSections, setLoadingSections] = useState(true);
 
+  // 🔍 Search handler
   async function handleSearch(query: string) {
     if (!query) {
-      setBooks([]);
-      sessionStorage.removeItem("lastSearch");
+      setSearchResults([]);
       setLastQuery("");
+      sessionStorage.removeItem("lastSearch");
       return;
     }
 
-    setLoading(true);
+    setLoadingSearch(true);
     try {
       const data = await searchBooks(query);
-      const docs = Array.isArray(data.docs) ? data.docs.slice(0, 100) : [];
-      setBooks(docs);
+      const docs = Array.isArray(data.docs) ? data.docs.slice(0, 50) : [];
+      setSearchResults(docs);
       setLastQuery(query);
 
       sessionStorage.setItem(
@@ -47,34 +44,91 @@ export default function Home() {
       );
     } catch (err) {
       console.error("Search error:", err);
-
-      toast(
-        (toastObj) => (
-          <div>
-            <span>{t("errorFetch")}</span>
-            <button
-              onClick={() => {
-                handleSearch(query);
-                toast.dismiss(toastObj.id);
-              }}
-              className="ml-2 underline"
-            >
-              {t("retry")}
-            </button>
-          </div>
-        ),
-        { duration: 8000 }
-      );
+      toast.error(t("errorFetch"));
     } finally {
-      setLoading(false);
+      setLoadingSearch(false);
     }
   }
+
+  // 📚 Load categories once
+  useEffect(() => {
+    async function loadAll() {
+      try {
+        const [t, c, r, k, th, tb] = await Promise.all([
+          fetchTrending("daily"),
+          fetchSubjectBooks("classics", 12),
+          fetchSubjectBooks("romance", 12),
+          fetchSubjectBooks("children", 12),
+          fetchSubjectBooks("suspense", 12), // Thrillers
+          fetchSubjectBooks("textbooks", 12),
+        ]);
+
+        setTrending(t.works || []);
+        setClassics(c.works || []);
+        setRomance(r.works || []);
+        setKids(k.works || []);
+        setThrillers(th.works || []);
+        setTextbooks(tb.works || []);
+      } catch (err) {
+        console.error("Error loading sections:", err);
+      } finally {
+        setLoadingSections(false);
+      }
+    }
+    loadAll();
+  }, []);
+
+  // helper со стрелки
+  const renderRow = (title: string, books: any[]) => {
+    const rowRef = useRef<HTMLDivElement>(null);
+
+    const scrollLeft = () => {
+      if (rowRef.current) rowRef.current.scrollBy({ left: -400, behavior: "smooth" });
+    };
+    const scrollRight = () => {
+      if (rowRef.current) rowRef.current.scrollBy({ left: 400, behavior: "smooth" });
+    };
+
+    return (
+      <div className="mb-10 relative">
+        <h2 className="text-xl font-bold mb-2">{title}</h2>
+        <button className="scroll-btn left" onClick={scrollLeft}>‹</button>
+        <div className="row-scroll" ref={rowRef}>
+          {loadingSections
+            ? Array.from({ length: 10 }).map((_, i) => (
+                <div key={i} className="skeleton-card">
+                  <div className="skeleton-cover" />
+                  <div className="skeleton-text" />
+                  <div className="skeleton-text short" />
+                </div>
+              ))
+            : books.map((book) => (
+                <div key={book.key} className="book-item">
+                  <BookCard
+                    bookKey={book.key}
+                    title={book.title}
+                    author={
+                      book.authors?.[0]?.name ||
+                      book.author_name?.[0] ||
+                      "Unknown"
+                    }
+                    year={book.first_publish_year}
+                    coverId={book.cover_id || book.cover_i}
+                  />
+                </div>
+              ))}
+        </div>
+        <button className="scroll-btn right" onClick={scrollRight}>›</button>
+      </div>
+    );
+  };
 
   return (
     <div
       className="min-h-screen p-4"
       style={{ backgroundColor: "var(--bg-color)", color: "var(--text-color)" }}
     >
+      {/* 🔍 Search bar */}
       <header
         className="sticky top-16 border-b p-4 z-10"
         style={{ backgroundColor: "var(--bg-color)", color: "var(--text-color)" }}
@@ -83,33 +137,22 @@ export default function Home() {
       </header>
 
       <main className="mt-4">
-        {/* Skeletons */}
-        {loading && (
+        {/* Search results */}
+        {loadingSearch && (
           <div className="grid">
             {Array.from({ length: 8 }).map((_, i) => (
               <div key={i} className="skeleton-card">
                 <div className="skeleton-cover" />
                 <div className="skeleton-text" />
-                <div
-                  className="skeleton-text"
-                  style={{ width: "60%" }}
-                />
+                <div className="skeleton-text short" />
               </div>
             ))}
           </div>
         )}
 
-        {/* Empty */}
-        {!loading && books.length === 0 && (
-          <div className="text-center">
-            <p className="mt-2 text-gray-500">{t("noResults")}</p>
-          </div>
-        )}
-
-        {/* Results */}
-        {!loading && books.length > 0 && (
+        {!loadingSearch && searchResults.length > 0 && (
           <div className="grid">
-            {books.map((book) => (
+            {searchResults.map((book) => (
               <BookCard
                 key={book.key}
                 bookKey={book.key}
@@ -120,6 +163,18 @@ export default function Home() {
               />
             ))}
           </div>
+        )}
+
+        {/* Categories */}
+        {!loadingSearch && searchResults.length === 0 && (
+          <>
+            {renderRow("🔥 Trending Books", trending)}
+            {renderRow("📚 Classic Books", classics)}
+            {renderRow("💖 Romance", romance)}
+            {renderRow("👶 Kids", kids)}
+            {renderRow("🔪 Thrillers", thrillers)}
+            {renderRow("📖 Textbooks", textbooks)}
+          </>
         )}
       </main>
     </div>
