@@ -20,7 +20,7 @@ export default function App() {
         className="flex items-center p-4 shadow-md"
         style={{ backgroundColor: "var(--bg-color)", color: "var(--text-color)" }}
       >
-        <Link className="mr-4 font-medium hover:underline" to="/">
+        <Link className="mr-4 font-medium hover:underline" to="/?reset=true">
           {t("home")}
         </Link>
         <Link className="font-medium hover:underline" to="/shelf">
