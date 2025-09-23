@@ -13,17 +13,33 @@ export default function App() {
 
   return (
     <div className="min-h-screen bg-white dark:bg-gray-800 text-black dark:text-white">
-      <nav className="bar">
-        <Link className="nav text-black dark:text-white mr-4" to="/">
+      <nav className="flex items-center p-4 bg-gray-100 dark:bg-gray-900 shadow-md">
+        <Link
+          className="text-black dark:text-white mr-4 font-medium hover:underline"
+          to="/"
+        >
           {t("home")}
         </Link>
-        <Link className="nav text-black dark:text-white" to="/shelf">
+        <Link
+          className="text-black dark:text-white font-medium hover:underline"
+          to="/shelf"
+        >
           {t("shelf")}
         </Link>
 
-        <div style={{ marginLeft: "auto", display: "flex", gap: "8px" }}>
-          <button onClick={() => changeLanguage("en")}>EN</button>
-          <button onClick={() => changeLanguage("es")}>ES</button>
+        <div className="ml-auto flex items-center gap-2">
+          <button
+            onClick={() => changeLanguage("en")}
+            className="px-2 py-1 rounded bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600"
+          >
+            EN
+          </button>
+          <button
+            onClick={() => changeLanguage("es")}
+            className="px-2 py-1 rounded bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600"
+          >
+            ES
+          </button>
           <ThemeToggle />
         </div>
       </nav>

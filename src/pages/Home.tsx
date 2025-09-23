@@ -1,26 +1,72 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import SearchBar from "../components/SearchBar";
 import BookCard from "../components/BookCard";
 import { searchBooks } from "../api";
 import { useTranslation } from "react-i18next";
+import toast from "react-hot-toast";
+import './Home.css';
 
 export default function Home() {
   const { t } = useTranslation();
   const [books, setBooks] = useState<any[]>([]);
   const [loading, setLoading] = useState(false);
+  const [lastQuery, setLastQuery] = useState("");
+
+
+  useEffect(() => {
+    try {
+      const saved = sessionStorage.getItem("lastSearch");
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        setBooks(parsed.books || []);
+        setLastQuery(parsed.query || "");
+      }
+    } catch (err) {
+      console.error("Failed to parse sessionStorage lastSearch", err);
+      sessionStorage.removeItem("lastSearch");
+    }
+  }, []);
 
   async function handleSearch(query: string) {
     if (!query) {
       setBooks([]);
+      sessionStorage.removeItem("lastSearch");
+      setLastQuery("");
       return;
     }
 
     setLoading(true);
     try {
       const data = await searchBooks(query);
-      setBooks(data.docs);
-    } catch (e) {
-      console.log(e);
+      const docs = Array.isArray(data.docs) ? data.docs.slice(0, 100) : [];
+
+      setBooks(docs);
+      setLastQuery(query);
+
+      sessionStorage.setItem(
+        "lastSearch",
+        JSON.stringify({ query, books: docs, savedAt: Date.now() })
+      );
+    } catch (err) {
+      console.error("Search error:", err);
+
+      toast(
+        (toastObj) => (
+          <div>
+            <span>{t("errorFetch")}</span>
+            <button
+              onClick={() => {
+                handleSearch(query);
+                toast.dismiss(toastObj.id);
+              }}
+              className="ml-2 underline"
+            >
+              {t("retry")}
+            </button>
+          </div>
+        ),
+        { duration: 8000 }
+      );
     } finally {
       setLoading(false);
     }
@@ -29,26 +75,35 @@ export default function Home() {
   return (
     <div className="bg-white dark:bg-gray-800 text-black dark:text-white min-h-screen p-4">
       <header className="sticky top-16 bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 p-4 z-10">
-        <SearchBar onSearch={handleSearch}/>
+        <SearchBar onSearch={handleSearch} initialValue={lastQuery} />
       </header>
 
       <main className="mt-4">
+        {/* Skeletons */}
         {loading && (
-          <div className="grid gap-4 grid-cols-[repeat(auto-fill,_minmax(180px,_1fr))]">
+          <div className="grid">
             {Array.from({ length: 8 }).map((_, i) => (
-              <div key={i} className="flex flex-col gap-2 w-40 h-56">
-                <div className="bg-gray-200 dark:bg-gray-700 rounded animate-pulse h-44 w-full"></div>
-                <div className="bg-gray-200 dark:bg-gray-700 rounded animate-pulse h-4 w-full"></div>
-                <div className="bg-gray-200 dark:bg-gray-700 rounded animate-pulse h-4 w-3/5"></div>
+              <div key={i} className="skeleton-card">
+                <div className="skeleton-cover" />
+                <div className="skeleton-text" />
+                <div className="skeleton-text" style={{ width: "60%" }} />
               </div>
             ))}
           </div>
         )}
 
-        {!loading && books.length === 0 && <p>{t("noResults")}</p>}
+        {/* Empty */}
+        {!loading && books.length === 0 && (
+          <div className="text-center">
+            <p className="mt-2 text-gray-500 dark:text-gray-400">
+              {t("noResults")}
+            </p>
+          </div>
+        )}
 
-        {!loading && (
-          <div className="grid gap-4 grid-cols-[repeat(auto-fill,_minmax(180px,_1fr))]">
+        {/* Results */}
+        {!loading && books.length > 0 && (
+          <div className="grid">
             {books.map((book) => (
               <BookCard
                 key={book.key}

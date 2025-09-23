@@ -1,7 +1,12 @@
-/** @type {import('tailwindcss').Config} */
 module.exports = {
-  darkMode: "class", // ова е клучно!
-  content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
-  theme: { extend: {} },
+  darkMode: 'class', // 👈 важно за class-based dark mode
+  content: [
+    "./index.html",
+    "./src/**/*.{js,ts,jsx,tsx}",
+  ],
+  safelist: ["animate-pulse"], // 👈 ако purge го вади
+  theme: {
+    extend: {},
+  },
   plugins: [],
 };
