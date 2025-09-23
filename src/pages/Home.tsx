@@ -1,19 +1,17 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import SearchBar from "../components/SearchBar";
-import BookCard from "../components/BookCard";
 import { searchBooks, fetchTrending, fetchSubjectBooks } from "../api";
+import CategoryRow from "../components/CategoryRow";
 import toast from "react-hot-toast";
 import { useTranslation } from "react-i18next";
 import "./Home.css";
+import BookCard from "../components/BookCard";
 
 export default function Home() {
   const { t } = useTranslation();
-
   const [searchResults, setSearchResults] = useState<any[]>([]);
   const [loadingSearch, setLoadingSearch] = useState(false);
   const [lastQuery, setLastQuery] = useState("");
-
-  // категории
   const [trending, setTrending] = useState<any[]>([]);
   const [classics, setClassics] = useState<any[]>([]);
   const [romance, setRomance] = useState<any[]>([]);
@@ -22,7 +20,6 @@ export default function Home() {
   const [textbooks, setTextbooks] = useState<any[]>([]);
   const [loadingSections, setLoadingSections] = useState(true);
 
-  // 🔍 Search handler
   async function handleSearch(query: string) {
     if (!query) {
       setSearchResults([]);
@@ -30,14 +27,12 @@ export default function Home() {
       sessionStorage.removeItem("lastSearch");
       return;
     }
-
     setLoadingSearch(true);
     try {
       const data = await searchBooks(query);
       const docs = Array.isArray(data.docs) ? data.docs.slice(0, 50) : [];
       setSearchResults(docs);
       setLastQuery(query);
-
       sessionStorage.setItem(
         "lastSearch",
         JSON.stringify({ query, books: docs, savedAt: Date.now() })
@@ -50,7 +45,6 @@ export default function Home() {
     }
   }
 
-  // 📚 Load categories once
   useEffect(() => {
     async function loadAll() {
       try {
@@ -62,13 +56,12 @@ export default function Home() {
           fetchSubjectBooks("suspense", 12), // Thrillers
           fetchSubjectBooks("textbooks", 12),
         ]);
-
-        setTrending(t.works || []);
-        setClassics(c.works || []);
-        setRomance(r.works || []);
-        setKids(k.works || []);
-        setThrillers(th.works || []);
-        setTextbooks(tb.works || []);
+        setTrending(t.works);
+        setClassics(c.works);
+        setRomance(r.works);
+        setKids(k.works);
+        setThrillers(th.works);
+        setTextbooks(tb.works);
       } catch (err) {
         console.error("Error loading sections:", err);
       } finally {
@@ -78,67 +71,25 @@ export default function Home() {
     loadAll();
   }, []);
 
-  // helper со стрелки
-  const renderRow = (title: string, books: any[]) => {
-    const rowRef = useRef<HTMLDivElement>(null);
-
-    const scrollLeft = () => {
-      if (rowRef.current) rowRef.current.scrollBy({ left: -400, behavior: "smooth" });
-    };
-    const scrollRight = () => {
-      if (rowRef.current) rowRef.current.scrollBy({ left: 400, behavior: "smooth" });
-    };
-
-    return (
-      <div className="mb-10 relative">
-        <h2 className="text-xl font-bold mb-2">{title}</h2>
-        <button className="scroll-btn left" onClick={scrollLeft}>‹</button>
-        <div className="row-scroll" ref={rowRef}>
-          {loadingSections
-            ? Array.from({ length: 10 }).map((_, i) => (
-                <div key={i} className="skeleton-card">
-                  <div className="skeleton-cover" />
-                  <div className="skeleton-text" />
-                  <div className="skeleton-text short" />
-                </div>
-              ))
-            : books.map((book) => (
-                <div key={book.key} className="book-item">
-                  <BookCard
-                    bookKey={book.key}
-                    title={book.title}
-                    author={
-                      book.authors?.[0]?.name ||
-                      book.author_name?.[0] ||
-                      "Unknown"
-                    }
-                    year={book.first_publish_year}
-                    coverId={book.cover_id || book.cover_i}
-                  />
-                </div>
-              ))}
-        </div>
-        <button className="scroll-btn right" onClick={scrollRight}>›</button>
-      </div>
-    );
-  };
-
   return (
     <div
       className="min-h-screen p-4"
-      style={{ backgroundColor: "var(--bg-color)", color: "var(--text-color)" }}
+      style={{
+        backgroundColor: "var(--bg-color)",
+        color: "var(--text-color)",
+      }}
     >
-      {/* 🔍 Search bar */}
       <header
         className="sticky top-16 border-b p-4 z-10"
-        style={{ backgroundColor: "var(--bg-color)", color: "var(--text-color)" }}
+        style={{
+          backgroundColor: "var(--bg-color)",
+          color: "var(--text-color)",
+        }}
       >
         <SearchBar onSearch={handleSearch} initialValue={lastQuery} />
       </header>
-
       <main className="mt-4">
-        {/* Search results */}
-        {loadingSearch && (
+        {loadingSearch ? (
           <div className="grid">
             {Array.from({ length: 8 }).map((_, i) => (
               <div key={i} className="skeleton-card">
@@ -148,9 +99,7 @@ export default function Home() {
               </div>
             ))}
           </div>
-        )}
-
-        {!loadingSearch && searchResults.length > 0 && (
+        ) : searchResults.length > 0 ? (
           <div className="grid">
             {searchResults.map((book) => (
               <BookCard
@@ -159,21 +108,42 @@ export default function Home() {
                 title={book.title}
                 author={book.author_name?.[0] || t("unknown")}
                 year={book.first_publish_year}
-                coverId={book.cover_i}
+                coverId={book.coveri}
               />
             ))}
           </div>
-        )}
-
-        {/* Categories */}
-        {!loadingSearch && searchResults.length === 0 && (
+        ) : (
           <>
-            {renderRow("🔥 Trending Books", trending)}
-            {renderRow("📚 Classic Books", classics)}
-            {renderRow("💖 Romance", romance)}
-            {renderRow("👶 Kids", kids)}
-            {renderRow("🔪 Thrillers", thrillers)}
-            {renderRow("📖 Textbooks", textbooks)}
+            <CategoryRow
+              title="Trending Books"
+              books={trending}
+              loading={loadingSections}
+            />
+            <CategoryRow
+              title="Classic Books"
+              books={classics}
+              loading={loadingSections}
+            />
+            <CategoryRow
+              title="Romance"
+              books={romance}
+              loading={loadingSections}
+            />
+            <CategoryRow
+              title="Kids"
+              books={kids}
+              loading={loadingSections}
+            />
+            <CategoryRow
+              title="Thrillers"
+              books={thrillers}
+              loading={loadingSections}
+            />
+            <CategoryRow
+              title="Textbooks"
+              books={textbooks}
+              loading={loadingSections}
+            />
           </>
         )}
       </main>

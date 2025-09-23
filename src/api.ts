@@ -1,4 +1,3 @@
-// src/api.ts
 
 export async function searchBooks(query: string) {
   const res = await fetch(`https://openlibrary.org/search.json?q=${encodeURIComponent(query)}`);

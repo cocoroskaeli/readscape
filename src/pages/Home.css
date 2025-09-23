@@ -141,3 +141,104 @@
 .scroll-btn.right {
   right: -10px;
 }
+
+.row-scroll {
+  display: flex;
+  gap: 1rem;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  padding-bottom: 0.5rem;
+}
+.scroll-btn {
+  position: absolute;
+  top: 40px;
+  transform: translateY(-50%);
+  background: rgba(0,0,0,0.5);
+  color: white;
+  border: none;
+  font-size: 2rem;
+  padding: 0.2em 0.5em;
+  cursor: pointer;
+  z-index: 10;
+  border-radius: 50%;
+}
+.scroll-btn.left { left: -10px; }
+.scroll-btn.right { right: -10px; }
+
+.category-row {
+  position: relative;
+  margin-bottom: 2rem;
+}
+
+.category-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.5rem;
+  font-weight: 700;
+  font-size: 1.25rem;
+  color: var(--text-color);
+}
+
+.category-header button {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  transition: color 0.2s ease-in-out;
+  color: var(--text-color);
+  padding: 0.2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.category-header button:hover {
+  color: #3b82f6;
+}
+
+.row-scroll {
+  display: flex;
+  gap: 1rem;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  padding-bottom: 0.75rem;
+  scrollbar-width: none;
+}
+
+.row-scroll::-webkit-scrollbar {
+  display: none;
+}
+
+.book-item {
+  flex: 0 0 160px;
+  scroll-snap-align: start;
+}
+
+.scroll-btn.left {
+  position: absolute;
+  left: 0.5rem;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 100;
+  background: rgba(255 255 255 / 0.85);
+  border-radius: 50%;
+  box-shadow: 0 2px 8px rgb(0 0 0 / 0.1);
+}
+
+.scroll-btn.right {
+  position: absolute;
+  right: 0.5rem;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 100;
+  background: rgba(255 255 255 / 0.85);
+  border-radius: 50%;
+  box-shadow: 0 2px 8px rgb(0 0 0 / 0.1);
+}
+
+.scroll-btn svg {
+  width: 24px;
+  height: 24px;
+  stroke: var(--text-color);
+  stroke-width: 2;
+}
