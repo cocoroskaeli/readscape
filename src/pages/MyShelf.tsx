@@ -5,27 +5,34 @@ import { useTranslation } from "react-i18next";
 
 export default function MyShelf() {
   const { shelf } = useShelfStore();
-  const [activeTab, setActiveTab] = useState<"want" | "reading" | "finished">("want");
+  const [activeTab, setActiveTab] = useState<"want" | "reading" | "finished">(
+    "want"
+  );
   const { t } = useTranslation();
 
   const tabs = ["want", "reading", "finished"] as const;
 
   const renderBooks = (books: typeof shelf.want) =>
-    books.length === 0
-      ? <p>{t("noBooksYet")}</p>
-      : books.map((book) => (
-          <BookCard
-            key={book.key}
-            bookKey={book.key}
-            title={book.title}
-            author={book.author || t("unknownAuthor")}
-            year={book.year}
-            coverId={book.coverId}
-          />
-        ));
+    books.length === 0 ? (
+      <p>{t("noBooksYet")}</p>
+    ) : (
+      books.map((book) => (
+        <BookCard
+          key={book.key}
+          bookKey={book.key}
+          title={book.title}
+          author={book.author || t("unknownAuthor")}
+          year={book.year}
+          coverId={book.coverId}
+        />
+      ))
+    );
 
   return (
-    <div className="bg-white dark:bg-gray-800 text-black dark:text-white p-4">
+    <div
+      className="p-4"
+      style={{ backgroundColor: "var(--bg-color)", color: "var(--text-color)" }}
+    >
       <h1 className="text-xl font-bold mb-4">📚 {t("shelf")}</h1>
 
       <div className="flex gap-4 mb-4">
@@ -37,7 +44,7 @@ export default function MyShelf() {
               activeTab === tab ? "bg-blue-500 text-white" : "bg-gray-200"
             }`}
           >
-            {t(tab)} {/* преведување на табовите */}
+            {t(tab)}
           </button>
         ))}
       </div>

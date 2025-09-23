@@ -4,14 +4,13 @@ import BookCard from "../components/BookCard";
 import { searchBooks } from "../api";
 import { useTranslation } from "react-i18next";
 import toast from "react-hot-toast";
-import './Home.css';
+import "./Home.css";
 
 export default function Home() {
   const { t } = useTranslation();
   const [books, setBooks] = useState<any[]>([]);
   const [loading, setLoading] = useState(false);
   const [lastQuery, setLastQuery] = useState("");
-
 
   useEffect(() => {
     try {
@@ -39,7 +38,6 @@ export default function Home() {
     try {
       const data = await searchBooks(query);
       const docs = Array.isArray(data.docs) ? data.docs.slice(0, 100) : [];
-
       setBooks(docs);
       setLastQuery(query);
 
@@ -73,8 +71,14 @@ export default function Home() {
   }
 
   return (
-    <div className="bg-white dark:bg-gray-800 text-black dark:text-white min-h-screen p-4">
-      <header className="sticky top-16 bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 p-4 z-10">
+    <div
+      className="min-h-screen p-4"
+      style={{ backgroundColor: "var(--bg-color)", color: "var(--text-color)" }}
+    >
+      <header
+        className="sticky top-16 border-b p-4 z-10"
+        style={{ backgroundColor: "var(--bg-color)", color: "var(--text-color)" }}
+      >
         <SearchBar onSearch={handleSearch} initialValue={lastQuery} />
       </header>
 
@@ -86,7 +90,10 @@ export default function Home() {
               <div key={i} className="skeleton-card">
                 <div className="skeleton-cover" />
                 <div className="skeleton-text" />
-                <div className="skeleton-text" style={{ width: "60%" }} />
+                <div
+                  className="skeleton-text"
+                  style={{ width: "60%" }}
+                />
               </div>
             ))}
           </div>
@@ -95,9 +102,7 @@ export default function Home() {
         {/* Empty */}
         {!loading && books.length === 0 && (
           <div className="text-center">
-            <p className="mt-2 text-gray-500 dark:text-gray-400">
-              {t("noResults")}
-            </p>
+            <p className="mt-2 text-gray-500">{t("noResults")}</p>
           </div>
         )}
 

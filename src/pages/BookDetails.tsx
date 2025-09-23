@@ -1,65 +1,62 @@
 import { useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
-import { getBookDetails } from "../api";
-import { fetchAuthorName } from "../api";
-export default function BookDetails ()
-{
-   const { id }=useParams<{id:string}>();
-   const[book,setBook]=useState<any>(null);
-   const [authors, setAuthors] = useState<string[]>([]);
+import { getBookDetails, fetchAuthorName } from "../api";
 
-   useEffect(()=>{
-     if (!id) return;
+export default function BookDetails() {
+  const { id } = useParams<{ id: string }>();
+  const [book, setBook] = useState<any>(null);
+  const [authors, setAuthors] = useState<string[]>([]);
 
-     getBookDetails(id)
-    .then(async (data) => {
-      setBook(data);
+  useEffect(() => {
+    if (!id) return;
 
-      if (data.authors?.length > 0) {
-        const names = await fetchAuthorName(data.authors);
-        setAuthors(names);
-      }
-    })
-    .catch(console.error);
-}, [id]);
+    getBookDetails(id)
+      .then(async (data) => {
+        setBook(data);
 
-   if(!book)
-   {
-    return <p>Loading ...</p>
-   }
+        if (data.authors?.length > 0) {
+          const names = await fetchAuthorName(data.authors);
+          setAuthors(names);
+        }
+      })
+      .catch(console.error);
+  }, [id]);
 
-   const coverId = book.covers?.[0];
-   const coverUrl = coverId
-  ? `https://covers.openlibrary.org/b/id/${coverId}-M.jpg`
-  : "https://via.placeholder.com/150x200?text=No+Cover";
+  if (!book) {
+    return <p>Loading ...</p>;
+  }
 
-   return(
-    <div className="p-4 bg-white dark:bg-gray-800 text-black dark:text-white p-4">
-        <h1 className="text-2xl font bold">{book.title}</h1>
+  const coverId = book.covers?.[0];
+  const coverUrl = coverId
+    ? `https://covers.openlibrary.org/b/id/${coverId}-M.jpg`
+    : "https://via.placeholder.com/150x200?text=No+Cover";
 
-        <img src={coverUrl} alt={book.title} className="mb-4 w-48" />
-
+  return (
+    <div
+      className="p-4"
+      style={{ backgroundColor: "var(--bg-color)", color: "var(--text-color)" }}
+    >
+      <h1 className="text-2xl font-bold">{book.title}</h1>
+      <img src={coverUrl} alt={book.title} className="mb-4 w-48" />
 
       <p>
-  {book.description
-    ? typeof book.description === "string"
-      ? book.description
-      : book.description.value
-    : "No description available."}
-</p>
+        {book.description
+          ? typeof book.description === "string"
+            ? book.description
+            : book.description.value
+          : "No description available."}
+      </p>
 
-    {authors.length > 0 && (
-  <div>
-    <h2 className="font-semibold mt-4">Authors:</h2>
-    <ul>
-      {authors.map((name, i) => (
-        <li key={i}>{name}</li>
-      ))}
-    </ul>
-  </div>
-)}
-
-    
+      {authors.length > 0 && (
+        <div>
+          <h2 className="font-semibold mt-4">Authors:</h2>
+          <ul>
+            {authors.map((name, i) => (
+              <li key={i}>{name}</li>
+            ))}
+          </ul>
+        </div>
+      )}
     </div>
-   );
+  );
 }

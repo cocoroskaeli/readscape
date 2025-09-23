@@ -1,12 +1,12 @@
-import React, { useState, useEffect } from 'react';
-import { setDarkModeOnHtml } from '../utils/themeUtils';
+import React, { useState, useEffect } from "react";
+import { setDarkModeOnHtml } from "../utils/themeUtils";
+
 const ThemeToggle = () => {
-  
   const [darkMode, setDarkMode] = useState(false);
 
   useEffect(() => {
-    const savedTheme = localStorage.getItem('theme');
-    if (savedTheme === 'dark') {
+    const savedTheme = localStorage.getItem("theme");
+    if (savedTheme === "dark") {
       setDarkMode(true);
       setDarkModeOnHtml(true);
     } else {
@@ -17,7 +17,7 @@ const ThemeToggle = () => {
 
   useEffect(() => {
     setDarkModeOnHtml(darkMode);
-    localStorage.setItem('theme', darkMode ? 'dark' : 'light');
+    localStorage.setItem("theme", darkMode ? "dark" : "light");
   }, [darkMode]);
 
   const toggleTheme = () => setDarkMode(!darkMode);
@@ -25,9 +25,9 @@ const ThemeToggle = () => {
   return (
     <button
       onClick={toggleTheme}
-      className="p-2 rounded bg-gray-200 dark:bg-gray-800 text-gray-800 dark:text-gray-200"
+      className="p-2 rounded bg-gray-200 text-gray-800 text-xl"
     >
-      {darkMode ? 'Light' : 'Dark'} theme
+      {darkMode ? "☀️" : "🌙"}
     </button>
   );
 };

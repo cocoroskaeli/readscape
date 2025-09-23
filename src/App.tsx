@@ -12,31 +12,31 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen bg-white dark:bg-gray-800 text-black dark:text-white">
-      <nav className="flex items-center p-4 bg-gray-100 dark:bg-gray-900 shadow-md">
-        <Link
-          className="text-black dark:text-white mr-4 font-medium hover:underline"
-          to="/"
-        >
+    <div
+      className="min-h-screen"
+      style={{ backgroundColor: "var(--bg-color)", color: "var(--text-color)" }}
+    >
+      <nav
+        className="flex items-center p-4 shadow-md"
+        style={{ backgroundColor: "var(--bg-color)", color: "var(--text-color)" }}
+      >
+        <Link className="mr-4 font-medium hover:underline" to="/">
           {t("home")}
         </Link>
-        <Link
-          className="text-black dark:text-white font-medium hover:underline"
-          to="/shelf"
-        >
+        <Link className="font-medium hover:underline" to="/shelf">
           {t("shelf")}
         </Link>
 
         <div className="ml-auto flex items-center gap-2">
           <button
             onClick={() => changeLanguage("en")}
-            className="px-2 py-1 rounded bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600"
+            className="px-2 py-1 rounded bg-gray-200 hover:bg-gray-300"
           >
             EN
           </button>
           <button
             onClick={() => changeLanguage("es")}
-            className="px-2 py-1 rounded bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600"
+            className="px-2 py-1 rounded bg-gray-200 hover:bg-gray-300"
           >
             ES
           </button>
