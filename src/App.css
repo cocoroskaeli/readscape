@@ -1,3 +1,4 @@
+/* 🔹 Theme variables */
 :root {
   --bg-color: #ffffff;
   --text-color: #000000;
@@ -8,34 +9,121 @@
   --text-color: #f0f0f0;
 }
 
+/* 🔹 Base body */
 body {
   background-color: var(--bg-color);
   color: var(--text-color);
   transition: background 0.3s, color 0.3s;
-}
-.nav {
-  padding: 1.5em;
-}
-
-.bar {
-  position: fixed;
-  top: 0;
+  font-family: system-ui, sans-serif;
+  margin: 0;
+  padding: 0;
 }
 
-.grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-  gap: 1rem;
-}
-
+/* 🔹 Book cards */
 .book-card {
   padding: 1rem;
   border-radius: 12px;
   text-align: center;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  background: var(--bg-color);
+  color: var(--text-color);
 }
 
 .book-card img {
   max-width: 100%;
   border-radius: 8px;
+}
+
+/* 🔹 Grid for books */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 1rem;
+}
+.app-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  font-family: system-ui, sans-serif;
+  margin: 0;
+}
+
+/* Header (црн) */
+.header {
+  background-color: #000;
+  color: #fff;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 24px;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+.logo {
+  font-size: 1.5rem;
+  font-weight: bold;
+  text-decoration: none;
+  color: white;
+}
+
+.header-right {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.lang-btn {
+  background: #333;
+  color: #fff;
+  border: none;
+  padding: 6px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+.lang-btn:hover {
+  background: #555;
+}
+
+/* Hero bar (розево-кремав дел) */
+.hero-bar {
+  background: linear-gradient(90deg, #ffe4e1, #fff5f0);
+  border-bottom: 1px solid #ddd;
+  padding: 12px 24px;
+}
+
+.hero-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.hero-links {
+  display: flex;
+  gap: 20px;
+}
+
+.hero-link {
+  font-weight: 600;
+  text-decoration: none;
+  color: #333;
+}
+.hero-link:hover {
+  text-decoration: underline;
+}
+
+.hero-search {
+  flex: 1;
+  display: flex;
+  justify-content: flex-end;
+}
+
+/* Main */
+.main-content {
+  flex: 1;
+  padding: 1rem;
 }

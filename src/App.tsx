@@ -12,39 +12,43 @@ export default function App() {
   };
 
   return (
-    <div
-      className="min-h-screen"
-      style={{ backgroundColor: "var(--bg-color)", color: "var(--text-color)" }}
-    >
-      <nav
-        className="flex items-center p-4 shadow-md"
-        style={{ backgroundColor: "var(--bg-color)", color: "var(--text-color)" }}
-      >
-        <Link className="mr-4 font-medium hover:underline" to="/?reset=true">
-          {t("home")}
-        </Link>
-        <Link className="font-medium hover:underline" to="/shelf">
-          {t("shelf")}
-        </Link>
+    <div className="app-container">
+      {/* 🔹 CRN HEADER */}
+      <nav className="header">
+        <div className="header-left">
+          <Link to="/?reset=true" className="logo">Readscape</Link>
+        </div>
 
-        <div className="ml-auto flex items-center gap-2">
-          <button
-            onClick={() => changeLanguage("en")}
-            className="px-2 py-1 rounded bg-gray-200 hover:bg-gray-300"
-          >
-            EN
-          </button>
-          <button
-            onClick={() => changeLanguage("es")}
-            className="px-2 py-1 rounded bg-gray-200 hover:bg-gray-300"
-          >
-            ES
-          </button>
+        <div className="header-right">
+          <button onClick={() => changeLanguage("en")} className="lang-btn">EN</button>
+          <button onClick={() => changeLanguage("es")} className="lang-btn">ES</button>
           <ThemeToggle />
         </div>
       </nav>
 
-      <Outlet />
+      {/* 🔹 HERO BAR (розево-кремав дел) */}
+      <div className="hero-bar">
+        <div className="hero-content">
+          <div className="hero-links">
+            <Link to="/?reset=true" className="hero-link">
+              {t("home")}
+            </Link>
+            <Link to="/shelf" className="hero-link">
+              {t("shelf")}
+            </Link>
+          </div>
+          <div className="hero-search">
+            {/* SearchBar ќе се прикажува во Home преку Outlet */}
+            <Outlet context={{ showSearch: true }} />
+          </div>
+        </div>
+      </div>
+
+      {/* 🔹 MAIN CONTENT */}
+      <main className="main-content">
+        <Outlet />
+      </main>
+
       <Toaster position="bottom-right" />
     </div>
   );
