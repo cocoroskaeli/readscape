@@ -61,17 +61,36 @@ body {
   z-index: 1000;
 }
 
+.header-left {
+  flex: 0 0 auto;
+  margin-right: auto; /* овозможува да се позиционира понасредено, не крај лево */
+  padding-left: 150px; /* поместување од левиот раб */
+  display: flex;
+  align-items: center;
+}
+
 .logo {
-  font-size: 1.5rem;
-  font-weight: bold;
-  text-decoration: none;
+  font-size: x-large; /* помало лого */
+  font-weight: 700;
   color: white;
+  cursor: pointer;
+  user-select: none;
+  text-decoration: none;
+  padding: 8px 12px; /* мали рабови за подобра поза и клик зона */
+  border-radius: 6px;
+  transition: background-color 0.3s ease;
+}
+.logo:hover {
+  background-color: rgba(255,255,255,0.1);
 }
 
 .header-right {
+ flex: 0 0 auto;
+  margin-left: auto; /* овозможува да се позиционира понасредено, не крај лево */
+  padding-right: 150px; /* поместување од левиот раб */
   display: flex;
-  gap: 10px;
   align-items: center;
+  gap: 10px;
 }
 
 .lang-btn {
@@ -90,7 +109,6 @@ body {
 .hero-bar {
   background: #ece2c6; /* Кремава позадина иста како main-bg */
   border-bottom: none; /* Може да го отстраниш ако сакаш без поделба */
-  padding: 12px 24px;
   box-shadow: none;
 }
 
@@ -104,20 +122,24 @@ body {
 }
 
 .hero-links {
+  padding-top: 35px;
+  padding-left: 30px;
   display: flex;
-  gap: 20px;
+  gap: 100px;
 }
 
 .hero-link {
   font-weight: 600;
   text-decoration: none;
   color: #333;
+  font-size: x-large;
 }
 .hero-link:hover {
   text-decoration: underline;
 }
 
 .hero-search {
+  padding-top: 35px;
   flex: 1;
   display: flex;
   justify-content: flex-end;
@@ -128,3 +150,4 @@ body {
   flex: 1;
   padding: 1rem;
 }
+

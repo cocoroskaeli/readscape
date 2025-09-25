@@ -131,7 +131,7 @@ export default function Home() {
           </>
         ) : (
           <div ref={categoriesRef}>
-            <CategoryRow
+            <CategoryRow 
               title="Trending Books"
               books={trending}
               loading={loadingSections}

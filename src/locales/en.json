@@ -4,7 +4,7 @@
   "shelf": "My Shelf",
   "details": "Details",
   "want": "Want",
-  "reading": "Reading",
+  "read": "Read",
   "finished": "Finished",
   "undo": "Undo",
   "alreadyInShelf": "You already have this book in your shelf",
@@ -13,5 +13,6 @@
    "noResults": "No results found",
   "unknown": "Unknown",
    "noBooksYet": "No books yet",
-  "unknownAuthor": "Unknown Author"
+  "unknownAuthor": "Unknown Author",
+  "removed from": "Removed from"
 }

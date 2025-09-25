@@ -229,6 +229,7 @@ body, html, #root {
   justify-content: center;
   align-items: flex-start;
   padding: 2rem 0;
+
 }
 
 /* Централен бел контейнер */
@@ -238,7 +239,7 @@ body, html, #root {
   background: #fff;
   border-radius: 18px;
   box-shadow: 0 2px 8px rgba(0,0,0,0.11);
-  padding: 2rem 2.5rem;
+  padding: 2rem 2.7rem;
   margin: 0 1rem;
   min-height: 80vh;
   display: flex;
@@ -285,7 +286,7 @@ body, html, #root {
   padding: 1.5rem;
   flex: 1 1 300px;
   max-width: 320px;
-  box-shadow: 0 3px 6px rgba(0,0,0,0.1);
+    box-shadow: 0 0 0 1px #ece2c6; 
 }
 
 .info-card h3 {
@@ -362,4 +363,350 @@ body, html, #root {
 .dark .book-card p,
 .dark .book-card small {
   color: #d1d5db;
+}
+.book-item {
+  flex: 0 0 180px;
+  max-width: 180px;
+  height: 360px;
+  display: flex;
+  flex-direction: column;
+  margin: auto;
+}
+
+.book-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+  background-color: var(--white, white);
+  padding: 16px;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgb(0 0 0 / 0.1);
+  color: var(--text-color);
+}
+
+.image-wrapper {
+  position: relative;
+}
+
+.book-cover-image {
+  width: 100%;
+  height: 240px;
+  object-fit: cover;
+  border-radius: 8px;
+  margin-bottom: 12px;
+}
+.heart-button {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  z-index: 10;
+  width: 36px;
+  height: 36px;
+  font-size: 24px;
+  line-height: 36px;
+  color: #ccc;
+  background: rgba(255, 255, 255, 0.75);
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.25);
+  border-radius: 50%;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  transition: color 0.3s ease, background 0.3s ease, box-shadow 0.3s ease;
+  outline: none; /* Го отстранува темниот фокус при кликање */
+}
+
+.heart-button:focus {
+  outline: none; /* Го спречува темниот фокус */
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.25); /* Останува сенката */
+}
+
+.heart-button.wanted {
+  color: #e02424;
+  background: rgba(255, 230, 230, 0.9);
+  box-shadow: 0 0 12px rgba(224, 36, 36, 0.7);
+}
+
+.heart-button:hover {
+  color: #e02424;
+  background: rgba(255, 230, 230, 0.9);
+  box-shadow: 0 0 12px rgba(224, 36, 36, 0.9);
+}
+.book-title {
+  font-weight: 600;
+  font-size: 1.1rem;
+  margin-bottom: 8px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: var(--text-color);
+}
+
+.book-author {
+  font-size: 0.9rem;
+  color: #555;
+  margin-bottom: 6px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.book-year {
+  font-size: 0.8rem;
+  color: #777;
+}
+
+.buttons button {
+  flex: 1;
+  font-size: 0.85rem;
+  padding: 6px 8px;
+}
+
+/* Dark mode */
+
+.dark .book-card {
+  background-color: var(--gray-700, #374151);
+  color: white;
+}
+
+.dark .book-card p,
+.dark .book-card small {
+  color: #d1d5db;
+}
+
+.book-card {
+  width: 180px;
+  background-color: #ece2c6;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgb(0 0 0 / 0.09);
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.book-cover-image {
+  width: 100%;
+  height: 240px;
+  object-fit: cover;
+  border-radius: 8px;
+  margin-bottom: 8px;
+}
+
+.btn-reading {
+  width: 100%;
+  padding: 12px 0;
+  background-color: #1677ff;
+  border: none;
+  border-radius: 8px;
+  color: white;
+  font-weight: 600;
+  font-size: 1.1rem;
+  cursor: pointer;
+  box-shadow: 0 1px 4px rgb(0 0 0 / 0.07);
+  transition: background-color 0.3s ease;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.btn-reading:hover {
+  background-color: #0f5194;
+}
+
+/* Dark mode */
+.dark .book-card {
+  background-color: var(--gray-700, #374151);
+}
+
+.dark .btn-reading {
+  background-color: #385fc7;
+  color: #f5f5f5;
+}
+
+.dark .btn-reading:hover {
+  background-color: #1c325f;
+}
+.category-header {
+  position: relative;
+  font-weight: 900;
+  font-size: 2rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: #1e3a8a; /* богата темно сина боја */
+  margin-bottom: 1.5rem;
+  padding-bottom: 0.5rem;
+  user-select: none;
+  cursor: default;
+  transition: color 0.3s ease;
+}
+.category-row {
+  position: relative;
+  padding: 2rem 0;
+  min-height: 320px;
+  margin-bottom: 2rem;
+}
+
+.books-row-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  min-height: 360px;
+}
+
+.scroll-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  z-index: 100;
+  padding: 0;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.2s, box-shadow 0.2s;
+}
+
+.scroll-btn.left {
+  left: -16px;       /* поблиску до раб */
+}
+.scroll-btn.right {
+  right: -16px;
+}
+
+.scroll-btn:disabled {
+  opacity: 0.33;
+}
+
+.scroll-btn svg {
+  width: 28px;       /* ПОМАЛО */
+  height: 28px;
+  display: block;
+}
+
+.scroll-btn svg circle {
+  fill: #fff;
+  stroke: #e0e7ef;
+  stroke-width: 1;
+  filter: drop-shadow(0 2px 7px #4442);
+  transition: stroke 0.2s;
+}
+.scroll-btn svg path {
+  stroke: #088bcd;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.scroll-btn:focus {
+  outline: none;
+}
+
+.scroll-btn:hover:not(:disabled) svg circle {
+  stroke: #14b8ff;
+  filter: drop-shadow(0 3px 10px #14b8ff22);
+}
+
+.books-row-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  min-height: 360px; /* висина како картичките */
+}
+
+.scroll-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: transparent;
+  border: none;
+  box-shadow: none;
+  cursor: pointer;
+  z-index: 100;
+  padding: 0;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.2s ease;
+}
+
+.scroll-btn.left {
+  left: -16px;
+}
+
+.scroll-btn.right {
+  right: -16px;
+}
+
+.scroll-btn:disabled {
+  opacity: 0.33;
+  cursor: not-allowed;
+}
+
+.scroll-btn svg {
+  width: 28px;
+  height: 28px;
+  display: block;
+}
+
+.scroll-btn svg circle {
+  fill: #fff;
+  stroke: #e0e7ef;
+  stroke-width: 1;
+  filter: drop-shadow(0 2px 7px #4442);
+  transition: stroke 0.2s;
+}
+
+.scroll-btn svg path {
+  stroke: #088bcd;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.scroll-btn:focus {
+  outline: none;
+}
+
+.scroll-btn:hover:not(:disabled) svg circle {
+  stroke: #14b8ff;
+  filter: drop-shadow(0 3px 10px #14b8ff22);
+}
+.row-fixed {
+  padding-left: 22px;
+  padding-right: 32px;
+}
+
+.category-header {
+  font-weight: 600;        /* полесен фонт */
+  font-size: 1rem;         /* помал font size */
+  color: #000000;          /* чиста црна боја */
+  margin-bottom: 1rem;     /* мала маргина */
+  letter-spacing: 0.03em;  /* помала раздалеченост на буквите */
+  text-transform: none;    /* без големи букви */
+  user-select: none;
+  cursor: default;
+  padding-bottom: 0.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.category-header {
+  position: relative;
+  font-weight: 700;
+  font-size: 0.8rem;
+  color: var(--text-color);
+  padding-top: 0.5rem;
+  margin-top: 1rem;
+  border-top: 2px solid #ece2c6; /* кремава боја за линија */
 }

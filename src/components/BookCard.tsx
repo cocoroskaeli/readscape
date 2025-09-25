@@ -1,3 +1,4 @@
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useShelfStore } from "../store/shelfStore";
 import toast from "react-hot-toast";
@@ -17,67 +18,64 @@ export default function BookCard({ title, author, year, coverId, bookKey }: Book
   const addBook = useShelfStore((state) => state.addBook);
   const removeBook = useShelfStore((state) => state.removeBook);
   const lastAction = useShelfStore((state) => state.lastAction);
+  const shelf = useShelfStore((state) => state.shelf);
+
+  const [isWanted, setIsWanted] = useState(false);
+
+  useEffect(() => {
+    setIsWanted(shelf.want.some((book) => book.key === bookKey));
+  }, [shelf.want, bookKey]);
 
   const coverUrl = coverId
     ? `https://covers.openlibrary.org/b/id/${coverId}-M.jpg`
     : "https://via.placeholder.com/150x200?text=No+Cover";
 
-  const handleAdd = (status: "want" | "reading" | "finished") => {
-    const book = { key: bookKey, title, author, year, coverId };
-    addBook(status, book);
+  const handleToggleWant = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    e.stopPropagation();
+    if (isWanted) {
+      removeBook("want", bookKey);
+      toast.success(t("removed from") + " ♥");
+      setIsWanted(false);
+    } else {
+      addBook("want", { key: bookKey, title, author, year, coverId });
+      toast.success(t("addedTo") + " ♥");
+      setIsWanted(true);
+    }
+  };
 
-    if (lastAction === "exists") {
+  const handleReading = () => {
+    addBook("reading", { key: bookKey, title, author, year, coverId });
+    if (lastAction === "added") {
+      toast.success(t("addedTo") + " " + t("reading"));
+    } else if (lastAction === "exists") {
       toast.error(t("alreadyInShelf"));
-    } else if (lastAction === "added") {
-      toast.success(
-        (tObj) => (
-          <span>
-            {t("addedTo")} <b>{t(status)}</b>
-            <button
-              onClick={() => {
-                removeBook(status, bookKey);
-                toast.dismiss(tObj.id);
-              }}
-              style={{ marginLeft: "10px", color: "red" }}
-            >
-              {t("undo")}
-            </button>
-          </span>
-        ),
-        { duration: 4000 }
-      );
     }
   };
 
   return (
     <div className="book-card bg-white dark:bg-gray-700 text-black dark:text-white p-4 rounded shadow">
-      <Link to={`/book/${bookKey.replace("/works/", "")}`}>
-        <img src={coverUrl} alt={title} className="book-cover-image mb-2 rounded" />
-        <h3 className="font-semibold book-title">{title}</h3>
-        <p className="book-author text-sm">{author}</p>
-        {year && <small className="book-year">{year}</small>}
-      </Link>
-
-      <div className="buttons flex gap-2 mt-2">
+      <div className="image-wrapper" style={{ position: "relative" }}>
+        <Link to={`/book/${bookKey.replace("/works/", "")}`}>
+          <img src={coverUrl} alt={title} className="book-cover-image" />
+        </Link>
         <button
-          className="px-2 py-1 bg-blue-500 text-white rounded dark:bg-blue-400"
-          onClick={() => handleAdd("want")}
+          onClick={handleToggleWant}
+          aria-label="Add to want shelf"
+          className={`heart-button ${isWanted ? "wanted" : ""}`}
+          type="button"
         >
-          {t("want")}
-        </button>
-        <button
-          className="px-2 py-1 bg-yellow-500 text-white rounded dark:bg-yellow-400"
-          onClick={() => handleAdd("reading")}
-        >
-          {t("reading")}
-        </button>
-        <button
-          className="px-2 py-1 bg-green-500 text-white rounded dark:bg-green-400"
-          onClick={() => handleAdd("finished")}
-        >
-          {t("finished")}
+          ♥
         </button>
       </div>
+      {/* Ете го само копчето под сликата, без текстови */}
+      <button
+        className="btn-reading"
+        onClick={handleReading}
+        type="button"
+      >
+        {t("read")}
+      </button>
     </div>
   );
 }
