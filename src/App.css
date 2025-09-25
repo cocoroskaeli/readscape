@@ -88,9 +88,10 @@ body {
 
 /* Hero bar (розево-кремав дел) */
 .hero-bar {
-  background: linear-gradient(90deg, #ffe4e1, #fff5f0);
-  border-bottom: 1px solid #ddd;
+  background: #ece2c6; /* Кремава позадина иста како main-bg */
+  border-bottom: none; /* Може да го отстраниш ако сакаш без поделба */
   padding: 12px 24px;
+  box-shadow: none;
 }
 
 .hero-content {

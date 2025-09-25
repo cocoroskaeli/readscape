@@ -52,10 +52,10 @@ export default function BookCard({ title, author, year, coverId, bookKey }: Book
   return (
     <div className="book-card bg-white dark:bg-gray-700 text-black dark:text-white p-4 rounded shadow">
       <Link to={`/book/${bookKey.replace("/works/", "")}`}>
-        <img src={coverUrl} alt={title} className="mb-2" />
-        <h3 className="font-semibold">{title}</h3>
-        <p className="text-sm">{author}</p>
-        {year && <small>{year}</small>}
+        <img src={coverUrl} alt={title} className="book-cover-image mb-2 rounded" />
+        <h3 className="font-semibold book-title">{title}</h3>
+        <p className="book-author text-sm">{author}</p>
+        {year && <small className="book-year">{year}</small>}
       </Link>
 
       <div className="buttons flex gap-2 mt-2">
