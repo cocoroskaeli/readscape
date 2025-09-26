@@ -21,10 +21,12 @@ export default function BookCard({ title, author, year, coverId, bookKey }: Book
   const shelf = useShelfStore((state) => state.shelf);
 
   const [isWanted, setIsWanted] = useState(false);
+  const [isReading, setIsReading] = useState(false);
 
   useEffect(() => {
     setIsWanted(shelf.want.some((book) => book.key === bookKey));
-  }, [shelf.want, bookKey]);
+    setIsReading(shelf.reading.some((book) => book.key === bookKey));
+  }, [shelf.want, shelf.reading, bookKey]);
 
   const coverUrl = coverId
     ? `https://covers.openlibrary.org/b/id/${coverId}-M.jpg`
@@ -68,13 +70,12 @@ export default function BookCard({ title, author, year, coverId, bookKey }: Book
           ♥
         </button>
       </div>
-      {/* Ете го само копчето под сликата, без текстови */}
       <button
-        className="btn-reading"
+        className={`btn-reading ${isReading ? "reading" : ""}`}
         onClick={handleReading}
         type="button"
       >
-        {t("read")}
+        {isReading ? t("Reading") : t("read")}
       </button>
     </div>
   );
