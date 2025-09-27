@@ -1323,7 +1323,7 @@ body, html, #root {
   display: flex;
   flex-direction: column;
   align-items: flex-start; /* важен дел, лево */
-  padding-left: 30px; 
+  padding-left: 60px; 
 }
 
 /* Обвиткувач на search делот - сите елементи по левата страна */
@@ -1347,12 +1347,16 @@ body, html, #root {
   align-items: center; /* Центрира категории */
 }
 
-.search-results-vertical2 {
+.search-header2 {
   width: 100%;
-  max-width: 700px;      /* опционално, менува се по вкус */
-  margin-left: 0;        /* најлев раб во wrapper */
+  max-width: 720px;  /* исто како search-card */
   display: flex;
   flex-direction: column;
-  align-items: flex-start; /* важен дел, лево */
-  padding-left: 30px; 
+  align-items: flex-start;   /* лево порамнување */
+  margin-bottom: 18px;
 }
+.bar{
+  padding-left: 0;
+}
+
+

@@ -99,10 +99,14 @@ export default function Home() {
         {query && fullSearchResults.length > 0 && (
           <div className="search-results-vertical">
             <h1 className="text-xl font-semibold">Search books</h1>
+            <div className="bar">
             <SearchBar onSearch={() => {}} initialValue={query} />
+            </div>
+            <div className="result">
             <p className="mt-2 text-gray-600">
               Showing results for: <span className="font-bold">{query}</span>
             </p>
+            </div>
           </div>
         )}
 

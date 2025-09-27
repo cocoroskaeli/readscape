@@ -29,11 +29,14 @@ const SearchBookCard: React.FC<SearchBookCardProps> = ({
         <p className="search-card-author">by {author}</p>
         {year && <p className="search-card-year">First published {year}</p>}
       </div>
-      <button className="search-card-btn" onClick={onReadClick}>
-        Read
-      </button>
+      <div className="search-card-btn-wrapper">
+        <button className="search-card-btn" onClick={onReadClick}>
+          Read
+        </button>
+      </div>
     </div>
   );
 };
 
 export default SearchBookCard;
+
