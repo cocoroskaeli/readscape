@@ -1271,3 +1271,88 @@ body, html, #root {
   gap: 14px;
   width: 100%;
 }
+
+.center-container {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 40px 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* центрира категории и welcome */
+}
+
+.home-categories-wrapper {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.home-categories {
+  max-width: 1100px;
+  width: 100%;
+}
+
+.search-section {
+  width: 100%;
+  max-width: 650px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start; /* порамнување лево */
+  margin-left: 0;
+}
+
+.search-results-vertical {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  gap: 14px;
+  align-items: flex-start;
+}
+
+.pagination {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+/* Порамување по лево само за резултати од пребарувањето */
+.search-results-vertical {
+  width: 100%;
+  max-width: 700px;      /* опционално, менува се по вкус */
+  margin-left: 0;        /* најлев раб во wrapper */
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start; /* важен дел, лево */
+  padding-left: 30px; 
+}
+
+/* Обвиткувач на search делот - сите елементи по левата страна */
+.mb-6 {
+  width: 100%;
+  max-width: 700px;      /* опционално, менува се по вкус */
+  margin-left: 0;        /* најлев раб во wrapper */
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start; /* важен дел, лево */
+  padding-left: 0; 
+}
+
+/* Центрирање само на категориите и welcome делот */
+.center-container {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 40px 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Центрира категории */
+}
+
+.search-results-vertical2 {
+  width: 100%;
+  max-width: 700px;      /* опционално, менува се по вкус */
+  margin-left: 0;        /* најлев раб во wrapper */
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start; /* важен дел, лево */
+  padding-left: 30px; 
+}

@@ -97,8 +97,8 @@ export default function Home() {
 
         {/* 👇 Ако има пребарување → Search books + search bar */}
         {query && fullSearchResults.length > 0 && (
-          <div className="mb-6">
-            <h1 className="text-2xl font-semibold mb-3">Search books</h1>
+          <div className="search-results-vertical">
+            <h1 className="text-xl font-semibold">Search books</h1>
             <SearchBar onSearch={() => {}} initialValue={query} />
             <p className="mt-2 text-gray-600">
               Showing results for: <span className="font-bold">{query}</span>
@@ -197,4 +197,7 @@ export default function Home() {
     </div>
   );
 }
+
+
+
 
