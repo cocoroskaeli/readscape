@@ -1,0 +1,62 @@
+.search-card {
+  display: flex;
+  align-items: flex-start;
+  background: white;
+  border: 1px solid #ddd;
+  padding: 12px;
+  margin-bottom: 12px;
+  border-radius: 8px;
+  transition: box-shadow 0.2s ease;
+  min-height: 150px; /* сите со иста висина */
+}
+
+.search-card:hover {
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.search-card-cover {
+  width: 80px;
+  height: 120px;
+  object-fit: cover;
+  border-radius: 4px;
+  margin-right: 16px;
+}
+
+.search-card-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start; /* текст горе */
+}
+
+.search-card-title {
+  font-size: 1.1rem;
+  font-weight: bold;
+  margin: 0;
+}
+
+.search-card-author {
+  color: #555;
+  margin: 4px 0;
+}
+
+.search-card-year {
+  font-size: 0.85rem;
+  color: #777;
+}
+
+.search-card-btn {
+  align-self: flex-start; /* копчето исто на лева страна */
+  margin-top: auto; /* оди долу */
+  background-color: #0077cc;
+  color: white;
+  border: none;
+  padding: 8px 14px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.9rem;
+}
+
+.search-card-btn:hover {
+  background-color: #005fa3;
+}
