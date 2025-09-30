@@ -1372,5 +1372,87 @@ body, html, #root {
   padding: 12px;
 }
 
+.shelf-tabs {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 32px; /* или пробај со 40px за уште поголема оддалеченост */
+  margin-bottom: 30px;
+}
+.shelf-tab-btn {
+  padding: 18px 48px;
+  min-width: 180px;
+  font-size: 1.15rem;
+  border-radius: 12px;
+  box-shadow: 0 1px 6px rgba(0,0,0,0.09);
+  border: none;
+  font-weight: 600;
+  transition: background 0.2s;
+}
+.shelf-tab-btn.active {
+  background: #2563eb;
+  color: white;
+}
+.shelf-tab-btn:not(.active) {
+  background: #ededed;
+  color: #222;
+}
+
+.shelf-tabs {
+  display: flex;
+  justify-content: center;
+  gap: 24px; /* растојание меѓу копчињата */
+  margin-bottom: 32px;
+}
+
+.shelf-tab-btn {
+  padding: 12px 28px;
+  border-radius: 8px;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+}
+
+.shelf-tab-btn.active {
+  background-color: #2563eb;
+  color: white;
+}
+
+.shelf-tab-btn:not(.active) {
+  background-color: #e5e7eb;
+  color: #1f2937;
+}
+.shelf-tabs {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  gap: 40px;
+  margin-bottom: 40px;
+}
+.shelf-tab-btn {
+  padding: 16px 40px;
+  min-width: 150px;
+  font-size: 1.15rem;
+  border-radius: 10px;
+  font-weight: 600;
+  box-shadow: 0 2px 8px #0001;
+  border: none;
+  transition: background 0.2s;
+}
+.shelf-tab-btn.active {
+  background: #2563eb;
+  color: #fff;
+}
+.shelf-tab-btn:not(.active) {
+  background: #ededed;
+  color: #222;
+}
+
+.empty-slot {
+  border: 2px dashed #ccc;
+  border-radius: 12px;
+  height: 360px; /* исто како book-item */
+}
+
 
 

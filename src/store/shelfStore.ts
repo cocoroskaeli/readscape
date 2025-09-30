@@ -6,7 +6,7 @@ interface Book {
   title: string;
   author: string;
   year?: number;
-  coverId?: number;
+  coverId?: number | undefined;
 }
 
 interface Shelf {
