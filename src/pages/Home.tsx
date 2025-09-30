@@ -128,10 +128,11 @@ export default function Home() {
               {pageResults.map((book) => (
                 <SearchBookCard
                   key={book.key}
+                  bookKey={book.key}
                   title={book.title}
                   author={book.author_name?.[0] || t("unknown")}
                   year={book.first_publish_year}
-                  coverId={book.cover_i || book.cover_id || null}
+                  coverId={book.cover_i || book.cover_id || null }
                   onReadClick={() => console.log("Read", book.title)}
                 />
               ))}
@@ -201,7 +202,3 @@ export default function Home() {
     </div>
   );
 }
-
-
-
-
