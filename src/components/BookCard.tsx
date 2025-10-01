@@ -35,6 +35,15 @@ export default function BookCard({ title, author, year, coverId, bookKey, active
   const handleToggleWant = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     e.stopPropagation();
+
+    // Не дозволувај додавање во want ако книгата е во reading или finished
+    const inReading = shelf.reading.some((book) => book.key === bookKey);
+    const inFinished = shelf.finished.some((book) => book.key === bookKey);
+    if (inReading || inFinished) {
+      toast.error(t("Cannot add to want: already in reading or finished"));
+      return;
+    }
+
     if (isWanted) {
       removeBook("want", bookKey);
       toast.success(t("removed from") + " ♥");
@@ -47,6 +56,7 @@ export default function BookCard({ title, author, year, coverId, bookKey, active
   };
 
   const handleReading = () => {
+    removeBook("want", bookKey);
     addBook("reading", { key: bookKey, title, author, year, coverId });
     if (lastAction === "added") {
       toast.success(t("addedTo") + " " + t("reading"));
@@ -77,8 +87,12 @@ export default function BookCard({ title, author, year, coverId, bookKey, active
         </button>
       </div>
       {activeTab === "reading" ? (
-        <button className="btn-reading" onClick={handleFinish} type="button">
+        <button className="btn-reading reading" onClick={handleFinish} type="button">
           {t("Finish")}
+        </button>
+      ) : activeTab === "finished" ? (
+        <button className="btn-reading reading" disabled type="button">
+          {t("Finished")}
         </button>
       ) : (
         <button
@@ -92,5 +106,8 @@ export default function BookCard({ title, author, year, coverId, bookKey, active
     </div>
   );
 }
+
+
+
 
 
