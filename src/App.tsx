@@ -1,4 +1,4 @@
-import { Link, Outlet } from "react-router-dom";
+import { Link, Outlet, useLocation } from "react-router-dom";
 import { Toaster } from "react-hot-toast";
 import { useTranslation } from "react-i18next";
 import ThemeToggle from "./components/ThemeToggle";
@@ -9,10 +9,16 @@ import "./App.css";
 export default function App() {
   const { t, i18n } = useTranslation();
   const [query, setQuery] = useState("");
+  const location = useLocation();
 
   const changeLanguage = (lng: string) => {
     i18n.changeLanguage(lng);
   };
+
+  // ❌ скриј SearchBar ако си на /shelf или /book/...
+  const hideSearch =
+    location.pathname.startsWith("/shelf") ||
+    location.pathname.startsWith("/book");
 
   return (
     <div className="app-container">
@@ -36,8 +42,10 @@ export default function App() {
             <Link to="/shelf" className="hero-link">{t("shelf")}</Link>
           </div>
           <div className="hero-search">
-            {/* SearchBar секогаш горе */}
-            <SearchBar onSearch={setQuery} initialValue={query} />
+            {/* ✅ SearchBar ќе се прикаже само ако не сме на shelf или book */}
+            {!hideSearch && (
+              <SearchBar onSearch={setQuery} initialValue={query} />
+            )}
           </div>
         </div>
       </div>

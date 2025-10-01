@@ -10,6 +10,7 @@ export default function MyShelf() {
   const tabs = ["want", "reading", "finished"] as const;
 
   return (
+  <div className="main-bg">
     <div className="p-4 center-container" style={{ backgroundColor: "var(--bg-color)", color: "var(--text-color)" }}>
       <h1 className="text-xl font-bold mb-4">{t("shelf")}</h1>
       <div className="shelf-tabs">
@@ -32,6 +33,6 @@ export default function MyShelf() {
         <ShelfCategory title={t("finished")} books={shelf.finished} activeTab="finished" />
       )}
     </div>
+   </div> 
   );
 }
-
