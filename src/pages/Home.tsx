@@ -2,13 +2,11 @@ import { useState, useEffect, useRef } from "react";
 import { useOutletContext } from "react-router-dom";
 import { searchBooks, fetchTrending, fetchSubjectBooks } from "../api";
 import CategoryRow from "../components/CategoryRow";
-import BookCard from "../components/BookCard";
-import SearchBookCard from "../components/SearchBookCard"; // 👈 новата компонента
+import SearchBookCard from "../components/SearchBookCard";
 import toast from "react-hot-toast";
 import { useTranslation } from "react-i18next";
 import "./Home.css";
 import CardInfo from "../components/CardInfo";
-import SearchBar from "../components/SearchBar";
 
 interface OutletContext {
   query: string;
@@ -18,10 +16,20 @@ export default function Home() {
   const { t } = useTranslation();
   const { query } = useOutletContext<OutletContext>();
   const categoriesRef = useRef<HTMLDivElement>(null);
-
-  const [fullSearchResults, setFullSearchResults] = useState<any[]>([]);
-  const [searchPage, setSearchPage] = useState(1);
   const ITEMS_PER_PAGE = 20;
+
+  // При иницијализација, обиди се да ги вчиташ од localStorage, 
+  // но обрни внимание само ако query од outlet context е празно,
+  // за да ги задржиш резултатите од тековниот query ако има.
+  const savedResults = localStorage.getItem("fullSearchResults");
+  const savedPage = localStorage.getItem("searchPage");
+
+  const [fullSearchResults, setFullSearchResults] = useState<any[]>(
+    query ? [] : (savedResults ? JSON.parse(savedResults) : [])
+  );
+  const [searchPage, setSearchPage] = useState(
+    query ? 1 : (savedPage ? Number(savedPage) : 1)
+  );
 
   const [loadingSearch, setLoadingSearch] = useState(false);
   const [trending, setTrending] = useState<any[]>([]);
@@ -32,7 +40,13 @@ export default function Home() {
   const [textbooks, setTextbooks] = useState<any[]>([]);
   const [loadingSections, setLoadingSections] = useState(true);
 
-  // 👉 Run search when query changes
+  // Зачувај во localStorage кога резултатите или страницата се менуваат
+  useEffect(() => {
+    localStorage.setItem("fullSearchResults", JSON.stringify(fullSearchResults));
+    localStorage.setItem("searchPage", searchPage.toString());
+  }, [fullSearchResults, searchPage]);
+
+  // Кога query ќе се промени, направи пребарување, прочисти претходните резултати и страница
   useEffect(() => {
     async function runSearch() {
       if (!query) {
@@ -53,9 +67,9 @@ export default function Home() {
       }
     }
     runSearch();
-  }, [query]);
+  }, [query, t]);
 
-  // 👉 Load homepage categories
+  // Вчитување на категориите за почетната страница
   useEffect(() => {
     async function loadAll() {
       try {
@@ -82,7 +96,7 @@ export default function Home() {
     loadAll();
   }, []);
 
-  // 👉 Pagination for search
+  // Пагинација на резултати
   const pageResults = fullSearchResults.slice(
     (searchPage - 1) * ITEMS_PER_PAGE,
     searchPage * ITEMS_PER_PAGE
@@ -92,25 +106,25 @@ export default function Home() {
   return (
     <div className="main-bg">
       <div className="center-container">
-        {/* 👇 Ако нема пребарување → покажи Welcome/CardInfo */}
+        {/* Ако нема пребарување → покажи Welcome/CardInfo */}
         {!query && <CardInfo />}
 
-        {/* 👇 Ако има пребарување → Search books + search bar */}
+        {/* Ако има пребарување → Прикажи резултати со SearchBar */}
         {query && fullSearchResults.length > 0 && (
           <div className="search-results-vertical">
             <h1 className="text-xl font-semibold">Search books</h1>
             <div className="bar">
-            <SearchBar onSearch={() => {}} initialValue={query} />
+              {/* Пребарувачкиот бар не се додава тука, го имаш во App */}
             </div>
             <div className="result">
-            <p className="mt-2 text-gray-600">
-              Showing results for: <span className="font-bold">{query}</span>
-            </p>
+              <p className="mt-2 text-gray-600">
+                Showing results for: <span className="font-bold">{query}</span>
+              </p>
             </div>
           </div>
         )}
 
-        {/* 👇 Search loading skeleton */}
+        {/* Ако резултатите се вчитуваат, покажи скелети */}
         {loadingSearch ? (
           <div className="loader-container">
             {Array.from({ length: 20 }).map((_, i) => (
@@ -123,7 +137,7 @@ export default function Home() {
           </div>
         ) : fullSearchResults.length > 0 ? (
           <>
-            {/* 👇 Search results (SearchBookCard) */}
+            {/* Резултати од пребарување (SearchBookCard) */}
             <div className="search-results-vertical">
               {pageResults.map((book) => (
                 <SearchBookCard
@@ -132,13 +146,13 @@ export default function Home() {
                   title={book.title}
                   author={book.author_name?.[0] || t("unknown")}
                   year={book.first_publish_year}
-                  coverId={book.cover_i || book.cover_id || null }
+                  coverId={book.cover_i || book.cover_id || null}
                   onReadClick={() => console.log("Read", book.title)}
                 />
               ))}
             </div>
 
-            {/* 👇 Pagination */}
+            {/* Пагинација */}
             {totalPages > 1 && (
               <div className="pagination">
                 {Array.from({ length: totalPages }).map((_, i) => {
@@ -202,3 +216,6 @@ export default function Home() {
     </div>
   );
 }
+
+
+

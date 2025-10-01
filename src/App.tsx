@@ -3,13 +3,20 @@ import { Toaster } from "react-hot-toast";
 import { useTranslation } from "react-i18next";
 import ThemeToggle from "./components/ThemeToggle";
 import SearchBar from "./components/SearchBar";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import "./App.css";
 
 export default function App() {
   const { t, i18n } = useTranslation();
-  const [query, setQuery] = useState("");
   const location = useLocation();
+
+  // Читај query од localStorage при иницијализација
+  const [query, setQuery] = useState(() => localStorage.getItem("searchQuery") || "");
+
+  // Зачувај го query во localStorage секогаш кога се менува
+  useEffect(() => {
+    localStorage.setItem("searchQuery", query);
+  }, [query]);
 
   const changeLanguage = (lng: string) => {
     i18n.changeLanguage(lng);
@@ -42,7 +49,7 @@ export default function App() {
             <Link to="/shelf" className="hero-link">{t("shelf")}</Link>
           </div>
           <div className="hero-search">
-            {/* ✅ SearchBar ќе се прикаже само ако не сме на shelf или book */}
+            {/* ✅ Show SearchBar only if not on /shelf or /book */}
             {!hideSearch && (
               <SearchBar onSearch={setQuery} initialValue={query} />
             )}
