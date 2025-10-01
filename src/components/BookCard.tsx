@@ -10,21 +10,11 @@ interface BookCardProps {
   year?: number;
   coverId?: number;
   bookKey: string;
-  showAddToFinishButton?: boolean;
-  onAddToFinish?: () => void;
+  activeTab?: string;
 }
 
-export default function BookCard({
-  title,
-  author,
-  year,
-  coverId,
-  bookKey,
-  showAddToFinishButton = false,
-  onAddToFinish,
-}: BookCardProps) {
+export default function BookCard({ title, author, year, coverId, bookKey, activeTab }: BookCardProps) {
   const { t } = useTranslation();
-
   const addBook = useShelfStore((state) => state.addBook);
   const removeBook = useShelfStore((state) => state.removeBook);
   const lastAction = useShelfStore((state) => state.lastAction);
@@ -45,10 +35,6 @@ export default function BookCard({
   const handleToggleWant = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     e.stopPropagation();
-    if (isReading) {
-      toast.error(t("cannotAddToWantWhileReading"));
-      return;
-    }
     if (isWanted) {
       removeBook("want", bookKey);
       toast.success(t("removed from") + " ♥");
@@ -61,17 +47,18 @@ export default function BookCard({
   };
 
   const handleReading = () => {
-    if (isWanted) {
-      removeBook("want", bookKey);
-      setIsWanted(false);
-    }
     addBook("reading", { key: bookKey, title, author, year, coverId });
     if (lastAction === "added") {
       toast.success(t("addedTo") + " " + t("reading"));
-      setIsReading(true);
     } else if (lastAction === "exists") {
       toast.error(t("alreadyInShelf"));
     }
+  };
+
+  const handleFinish = () => {
+    removeBook("reading", bookKey);
+    addBook("finished", { key: bookKey, title, author, year, coverId });
+    toast.success(t("Moved to Finished"));
   };
 
   return (
@@ -89,19 +76,21 @@ export default function BookCard({
           ♥
         </button>
       </div>
-      <button
-        className={`btn-reading ${isReading ? "reading" : ""}`}
-        onClick={handleReading}
-        type="button"
-      >
-        {isReading ? t("Reading") : t("read")}
-      </button>
-      {showAddToFinishButton && onAddToFinish && (
-        <button className="btn-finish" onClick={onAddToFinish} type="button">
-          {t("Add to finish")}
+      {activeTab === "reading" ? (
+        <button className="btn-reading" onClick={handleFinish} type="button">
+          {t("Finish")}
+        </button>
+      ) : (
+        <button
+          className={`btn-reading ${isReading ? "reading" : ""}`}
+          onClick={handleReading}
+          type="button"
+        >
+          {isReading ? t("Reading") : t("read")}
         </button>
       )}
     </div>
   );
 }
+
 

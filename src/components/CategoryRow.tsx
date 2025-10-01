@@ -6,6 +6,7 @@ interface CategoryRowProps {
   books: any[];
   loading: boolean;
   itemsPerPage?: number;
+  activeTab?: string; // Додај за да проследуваш таб статус
 }
 
 export default function CategoryRow({
@@ -13,6 +14,7 @@ export default function CategoryRow({
   books,
   loading,
   itemsPerPage = 5,
+  activeTab,
 }: CategoryRowProps) {
   const [page, setPage] = useState(0);
 
@@ -81,6 +83,7 @@ export default function CategoryRow({
                       }
                       year={book.first_publish_year}
                       coverId={book.cover_i || book.cover_id || null}
+                      activeTab={activeTab}  // Проследи го activeTab
                     />
                   </div>
                 )

@@ -6,7 +6,7 @@ interface Book {
   title: string;
   author: string;
   year?: number;
-  coverId?: number | undefined;
+  coverId?: number;
 }
 
 interface Shelf {
@@ -27,19 +27,15 @@ export const useShelfStore = create<ShelfStore>()(
     (set, get) => ({
       shelf: { want: [], reading: [], finished: [] },
       lastAction: undefined,
-
       addBook: (status, book) => {
         const shelf = get().shelf;
-
         const alreadyInShelf = Object.values(shelf)
           .flat()
           .some((b) => b.key === book.key);
-
         if (alreadyInShelf) {
           set({ lastAction: "exists" });
           return;
         }
-
         set((state) => ({
           shelf: {
             ...state.shelf,
@@ -48,7 +44,6 @@ export const useShelfStore = create<ShelfStore>()(
           lastAction: "added",
         }));
       },
-
       removeBook: (status, key) =>
         set((state) => ({
           shelf: {
