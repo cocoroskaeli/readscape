@@ -6,6 +6,7 @@ import toast from "react-hot-toast";
 
 export default function BookDetails() {
   const { id } = useParams<{ id: string }>();
+  const bookKey = `/works/${id}`;
   const [book, setBook] = useState<any>(null);
   const [authors, setAuthors] = useState<string[]>([]);
   const [rating, setRating] = useState(0);
@@ -15,8 +16,9 @@ export default function BookDetails() {
   const lastAction = useShelfStore((state) => state.lastAction);
   const shelf = useShelfStore((state) => state.shelf);
 
-  const isWanted = shelf.want.some((b) => b.key === id);
-  const isReading = shelf.reading.some((b) => b.key === id);
+  const isReading = shelf.reading.some((b) => b.key === bookKey);
+  const isWanted = shelf.want.some((b) => b.key === bookKey);
+  const isFinished = shelf.finished.some((b) => b.key === bookKey);
 
   useEffect(() => {
     if (!id) return;
@@ -38,19 +40,36 @@ export default function BookDetails() {
   }, [id]);
 
   const handleToggleWant = () => {
+    if (isReading || isFinished) {
+      toast.error("Cannot add to Want: already in Reading or Finished");
+      return;
+    }
     if (isWanted) {
-      removeBook("want", id!);
+      removeBook("want", bookKey);
       toast.success("Removed from Want to Read ♥");
     } else {
-      addBook("want", { key: id!, title: book.title, author: authors.join(", "), coverId: book.covers?.[0] });
+      addBook("want", {
+        key: bookKey,
+        title: book.title,
+        author: authors.join(", "),
+        coverId: book.covers?.[0],
+      });
       toast.success("Added to Want to Read ♥");
     }
   };
 
   const handleReading = () => {
-    addBook("reading", { key: id!, title: book.title, author: authors.join(", "), coverId: book.covers?.[0] });
+    if (isWanted) {
+      removeBook("want", bookKey);
+    }
+    addBook("reading", {
+      key: bookKey,
+      title: book.title,
+      author: authors.join(", "),
+      coverId: book.covers?.[0],
+    });
     if (lastAction === "added") {
-      toast.success("Added to Reading");
+      toast.success("Added to Reading, Removed from Want");
     } else if (lastAction === "exists") {
       toast.error("Already in shelf");
     }
@@ -87,30 +106,38 @@ export default function BookDetails() {
   return (
     <div className="center-container details-center">
       <div className="book-info-flex">
-        <div className="book-cover-col" style={{ position: "relative", display: "flex", flexDirection: "column", alignItems: "center" }}>
+        <div
+          className="book-cover-col"
+          style={{
+            position: "relative",
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+          }}
+        >
           <button
             onClick={handleToggleWant}
             className={`heart-button ${isWanted ? "wanted" : ""}`}
             aria-label="Toggle Want to Read"
-            style={{
-              position: "absolute",
-              top: "8px",
-              left: "8px",
-              zIndex: 2
-            }}
+            style={{ position: "absolute", top: "8px", left: "8px", zIndex: 2 }}
           >
             ♥
           </button>
           <img src={coverUrl} alt={book.title} className="book-details-cover" />
-          <button
-            className={`btn-reading ${isReading ? "reading" : ""}`}
-            onClick={handleReading}
-            type="button"
-            style={{ marginTop: "10px" }}
+          {!isFinished && (
+            <button
+              className={`btn-reading ${isReading ? "reading" : ""}`}
+              onClick={handleReading}
+              type="button"
+              style={{ marginTop: "10px" }}
+            >
+              {isReading ? "Reading" : "Read"}
+            </button>
+          )}
+          <div
+            className="rating-stars"
+            style={{ marginTop: "18px", display: "flex" }}
           >
-            {isReading ? "Reading" : "Read"}
-          </button>
-          <div className="rating-stars" style={{ marginTop: "18px", display: "flex" }}>
             {[1, 2, 3, 4, 5].map((num) => (
               <span
                 key={num}
@@ -144,3 +171,8 @@ export default function BookDetails() {
     </div>
   );
 }
+
+
+
+
+

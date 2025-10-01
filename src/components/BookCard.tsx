@@ -1,4 +1,3 @@
-import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useShelfStore } from "../store/shelfStore";
 import toast from "react-hot-toast";
@@ -9,7 +8,7 @@ interface BookCardProps {
   author: string;
   year?: number;
   coverId?: number;
-  bookKey: string;
+  bookKey: string; // ова мора да биде "/works/..." кога го добиваш
   activeTab?: string;
 }
 
@@ -20,13 +19,10 @@ export default function BookCard({ title, author, year, coverId, bookKey, active
   const lastAction = useShelfStore((state) => state.lastAction);
   const shelf = useShelfStore((state) => state.shelf);
 
-  const [isWanted, setIsWanted] = useState(false);
-  const [isReading, setIsReading] = useState(false);
-
-  useEffect(() => {
-    setIsWanted(shelf.want.some((book) => book.key === bookKey));
-    setIsReading(shelf.reading.some((book) => book.key === bookKey));
-  }, [shelf.want, shelf.reading, bookKey]);
+  // ✅ користиме исто bookKey како и во BookDetails
+  const isWanted = shelf.want.some((book) => book.key === bookKey);
+  const isReading = shelf.reading.some((book) => book.key === bookKey);
+  const isFinished = shelf.finished.some((book) => book.key === bookKey);
 
   const coverUrl = coverId
     ? `https://covers.openlibrary.org/b/id/${coverId}-M.jpg`
@@ -36,10 +32,7 @@ export default function BookCard({ title, author, year, coverId, bookKey, active
     e.preventDefault();
     e.stopPropagation();
 
-    // Не дозволувај додавање во want ако книгата е во reading или finished
-    const inReading = shelf.reading.some((book) => book.key === bookKey);
-    const inFinished = shelf.finished.some((book) => book.key === bookKey);
-    if (inReading || inFinished) {
+    if (isReading || isFinished) {
       toast.error(t("Cannot add to want: already in reading or finished"));
       return;
     }
@@ -47,16 +40,16 @@ export default function BookCard({ title, author, year, coverId, bookKey, active
     if (isWanted) {
       removeBook("want", bookKey);
       toast.success(t("removed from") + " ♥");
-      setIsWanted(false);
     } else {
       addBook("want", { key: bookKey, title, author, year, coverId });
       toast.success(t("addedTo") + " ♥");
-      setIsWanted(true);
     }
   };
 
   const handleReading = () => {
-    removeBook("want", bookKey);
+    if (isWanted) {
+      removeBook("want", bookKey);
+    }
     addBook("reading", { key: bookKey, title, author, year, coverId });
     if (lastAction === "added") {
       toast.success(t("addedTo") + " " + t("reading"));
@@ -86,6 +79,7 @@ export default function BookCard({ title, author, year, coverId, bookKey, active
           ♥
         </button>
       </div>
+
       {activeTab === "reading" ? (
         <button className="btn-reading reading" onClick={handleFinish} type="button">
           {t("Finish")}
