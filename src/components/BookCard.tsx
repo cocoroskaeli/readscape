@@ -10,9 +10,19 @@ interface BookCardProps {
   year?: number;
   coverId?: number;
   bookKey: string;
+  showAddToFinishButton?: boolean;
+  onAddToFinish?: () => void;
 }
 
-export default function BookCard({ title, author, year, coverId, bookKey }: BookCardProps) {
+export default function BookCard({
+  title,
+  author,
+  year,
+  coverId,
+  bookKey,
+  showAddToFinishButton = false,
+  onAddToFinish,
+}: BookCardProps) {
   const { t } = useTranslation();
 
   const addBook = useShelfStore((state) => state.addBook);
@@ -35,6 +45,10 @@ export default function BookCard({ title, author, year, coverId, bookKey }: Book
   const handleToggleWant = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     e.stopPropagation();
+    if (isReading) {
+      toast.error(t("cannotAddToWantWhileReading"));
+      return;
+    }
     if (isWanted) {
       removeBook("want", bookKey);
       toast.success(t("removed from") + " ♥");
@@ -47,9 +61,14 @@ export default function BookCard({ title, author, year, coverId, bookKey }: Book
   };
 
   const handleReading = () => {
+    if (isWanted) {
+      removeBook("want", bookKey);
+      setIsWanted(false);
+    }
     addBook("reading", { key: bookKey, title, author, year, coverId });
     if (lastAction === "added") {
       toast.success(t("addedTo") + " " + t("reading"));
+      setIsReading(true);
     } else if (lastAction === "exists") {
       toast.error(t("alreadyInShelf"));
     }
@@ -77,6 +96,12 @@ export default function BookCard({ title, author, year, coverId, bookKey }: Book
       >
         {isReading ? t("Reading") : t("read")}
       </button>
+      {showAddToFinishButton && onAddToFinish && (
+        <button className="btn-finish" onClick={onAddToFinish} type="button">
+          {t("Add to finish")}
+        </button>
+      )}
     </div>
   );
 }
+

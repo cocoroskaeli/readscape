@@ -11,9 +11,10 @@ interface ShelfCategoryProps {
     coverId?: number;
   }>;
   loading?: boolean;
+  showAddToFinishButton?: boolean;
 }
 
-const ShelfCategory: React.FC<ShelfCategoryProps> = ({ title, books, loading }) => {
+const ShelfCategory: React.FC<ShelfCategoryProps> = ({ title, books, loading, showAddToFinishButton }) => {
   const formattedBooks = books.map((book) => ({
     key: book.key,
     title: book.title,
@@ -28,8 +29,10 @@ const ShelfCategory: React.FC<ShelfCategoryProps> = ({ title, books, loading }) 
       books={formattedBooks}
       loading={loading ?? false}
       itemsPerPage={5}
+      showAddToFinishButton={showAddToFinishButton}
     />
   );
 };
 
 export default ShelfCategory;
+

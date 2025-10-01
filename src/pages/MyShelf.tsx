@@ -2,6 +2,7 @@ import ShelfCategory from "../components/ShelfCategory";
 import { useShelfStore } from "../store/shelfStore";
 import { useTranslation } from "react-i18next";
 import { useState } from "react";
+
 export default function MyShelf() {
   const { shelf } = useShelfStore();
   const { t } = useTranslation();
@@ -15,7 +16,6 @@ export default function MyShelf() {
     >
       <h1 className="text-xl font-bold mb-4">{t("shelf")}</h1>
 
-      {/* Промени го ова div и копчиња */}
       <div className="shelf-tabs">
         {tabs.map((tab) => (
           <button
@@ -29,8 +29,11 @@ export default function MyShelf() {
       </div>
 
       {activeTab === "want" && <ShelfCategory title={t("want")} books={shelf.want} />}
-      {activeTab === "reading" && <ShelfCategory title={t("reading")} books={shelf.reading} />}
+      {activeTab === "reading" && (
+        <ShelfCategory title={t("reading")} books={shelf.reading} showAddToFinishButton />
+      )}
       {activeTab === "finished" && <ShelfCategory title={t("finished")} books={shelf.finished} />}
     </div>
   );
 }
+
