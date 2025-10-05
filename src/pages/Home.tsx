@@ -98,11 +98,11 @@ export default function Home() {
 
   return (
     <div className="main-bg">
-      <div className="center-container">
+      <div className="center-container" style={{ backgroundColor: "var(--bg-color)", color: "var(--text-color)" }}>
         {!query && <CardInfo />}
 
         {query && fullSearchResults.length > 0 && (
-          <div className="search-results-vertical">
+          <div className="search-results-vertical" style={{ backgroundColor: "var(--bg-color)", color: "var(--text-color)" }}>
             <h1 className="text-xl font-semibold">{t("searchBooks")}</h1>
             <div className="bar"></div>
             <div className="result">
@@ -114,18 +114,18 @@ export default function Home() {
         )}
 
         {loadingSearch ? (
-          <div className="loader-container">
+          <div className="loader-container" style={{ backgroundColor: "var(--bg-color)", color: "var(--text-color)" }}>
             {Array.from({ length: 20 }).map((_, i) => (
-              <div key={i} className="skeleton-card">
-                <div className="skeleton-cover" />
-                <div className="skeleton-text" />
-                <div className="skeleton-text short" />
+              <div key={i} className="skeleton-card" style={{ backgroundColor: "var(--bg-color)", color: "var(--text-color)" }}>
+                <div className="skeleton-cover"style={{ backgroundColor: "var(--bg-color)", color: "var(--text-color)" }} />
+                <div className="skeleton-text"style={{ backgroundColor: "var(--bg-color)", color: "var(--text-color)" }} />
+                <div className="skeleton-text short"style={{ backgroundColor: "var(--bg-color)", color: "var(--text-color)" }} />
               </div>
             ))}
           </div>
         ) : fullSearchResults.length > 0 ? (
           <>
-            <div className="search-results-vertical">
+            <div className="search-results-vertical" style={{ backgroundColor: "var(--bg-color)", color: "var(--text-color)" }}>
               {pageResults.map((book) => (
                 <SearchBookCard
                   key={book.key}

@@ -64,7 +64,7 @@ export default function BookCard({ title, author, year, coverId, bookKey, active
   };
 
   return (
-    <div className="book-card bg-white dark:bg-gray-700 text-black dark:text-white p-4 rounded shadow">
+    <div className="book-card bg-white dark:bg-gray-700 text-black dark:text-white p-4 rounded shadow"  style={{ backgroundColor: "var(--bg-color)", color: "var(--text-color)" }}>
       <div className="image-wrapper" style={{ position: "relative" }}>
         <Link to={`/book/${bookKey.replace("/works/", "")}`}>
           <img src={coverUrl} alt={title} className="book-cover-image" />

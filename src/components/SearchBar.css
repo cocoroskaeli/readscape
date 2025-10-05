@@ -29,3 +29,15 @@
   background: transparent;
   color: #000;
 }
+:root {
+  --bg-color: #ffffff;
+  --text-color: #000000;
+    --main-bg-color: #ffffff; /* svetla pozadina */
+  --main-text-color: #000000; /* crn tekst */
+}
+[data-theme="dark"] {
+  --bg-color: #121212;
+  --text-color: #f0f0f0;
+   --main-bg-color: #121212; /* tamna pozadina */
+  --main-text-color: #f0f0f0; /* svetol tekst */
+}

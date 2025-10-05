@@ -106,7 +106,7 @@ export default function BookDetails() {
     : "https://via.placeholder.com/180x250?text=No+Cover";
 
   return (
-    <div className="center-container details-center">
+    <div className="center-container details-center"  style={{ backgroundColor: "var(--bg-color)", color: "var(--text-color)" }}>
       <div className="book-info-flex">
         <div className="book-cover-col" style={{ position: "relative", display: "flex", flexDirection: "column", alignItems: "center" }}>
           <button

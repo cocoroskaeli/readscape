@@ -53,9 +53,9 @@ const SearchBookCard: React.FC<SearchBookCardProps> = ({
 
   return (
     <Link to={`/book/${bookKey.replace("/works/", "")}`} className="search-card-link">
-      <div className="search-card">
+      <div className="search-card" style={{ backgroundColor: "var(--bg-color)", color: "var(--text-color)" }}>
         <img src={coverUrl} alt={title} className="search-card-cover" />
-        <div className="search-card-info">
+        <div className="search-card-info" style={{ backgroundColor: "var(--bg-color)", color: "var(--text-color)" }}>
           <h3 className="search-card-title">{title}</h3>
           <p className="search-card-author">{t("byAuthor", { authors: author })}</p>
           {year && <p className="search-card-year">{t("firstPublished", { year })}</p>}

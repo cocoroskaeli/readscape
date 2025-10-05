@@ -23,7 +23,7 @@ export default function SearchBar({ onSearch, initialValue = "" }: SearchBarProp
   }, [input]);
 
   return (
-    <div className="search-box">
+    <div className="search-box"style={{ backgroundColor: "var(--bg-color)", color: "var(--text-color)" }} >
       <span className="search-icon">🔍</span>
       <input
         type="text"
