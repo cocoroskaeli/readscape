@@ -13,14 +13,11 @@ interface OutletContext {
 }
 
 export default function Home() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const { query } = useOutletContext<OutletContext>();
   const categoriesRef = useRef<HTMLDivElement>(null);
   const ITEMS_PER_PAGE = 20;
 
-  // При иницијализација, обиди се да ги вчиташ од localStorage, 
-  // но обрни внимание само ако query од outlet context е празно,
-  // за да ги задржиш резултатите од тековниот query ако има.
   const savedResults = localStorage.getItem("fullSearchResults");
   const savedPage = localStorage.getItem("searchPage");
 
@@ -40,13 +37,11 @@ export default function Home() {
   const [textbooks, setTextbooks] = useState<any[]>([]);
   const [loadingSections, setLoadingSections] = useState(true);
 
-  // Зачувај во localStorage кога резултатите или страницата се менуваат
   useEffect(() => {
     localStorage.setItem("fullSearchResults", JSON.stringify(fullSearchResults));
     localStorage.setItem("searchPage", searchPage.toString());
   }, [fullSearchResults, searchPage]);
 
-  // Кога query ќе се промени, направи пребарување, прочисти претходните резултати и страница
   useEffect(() => {
     async function runSearch() {
       if (!query) {
@@ -69,11 +64,10 @@ export default function Home() {
     runSearch();
   }, [query, t]);
 
-  // Вчитување на категориите за почетната страница
   useEffect(() => {
     async function loadAll() {
       try {
-        const [t, c, r, k, th, tb] = await Promise.all([
+        const [tRes, c, r, k, th, tb] = await Promise.all([
           fetchTrending("daily"),
           fetchSubjectBooks("classics", 12),
           fetchSubjectBooks("romance", 12),
@@ -81,7 +75,7 @@ export default function Home() {
           fetchSubjectBooks("suspense", 12),
           fetchSubjectBooks("textbooks", 12),
         ]);
-        setTrending(t.works);
+        setTrending(tRes.works);
         setClassics(c.works);
         setRomance(r.works);
         setKids(k.works);
@@ -96,7 +90,6 @@ export default function Home() {
     loadAll();
   }, []);
 
-  // Пагинација на резултати
   const pageResults = fullSearchResults.slice(
     (searchPage - 1) * ITEMS_PER_PAGE,
     searchPage * ITEMS_PER_PAGE
@@ -106,25 +99,20 @@ export default function Home() {
   return (
     <div className="main-bg">
       <div className="center-container">
-        {/* Ако нема пребарување → покажи Welcome/CardInfo */}
         {!query && <CardInfo />}
 
-        {/* Ако има пребарување → Прикажи резултати со SearchBar */}
         {query && fullSearchResults.length > 0 && (
           <div className="search-results-vertical">
-            <h1 className="text-xl font-semibold">Search books</h1>
-            <div className="bar">
-              {/* Пребарувачкиот бар не се додава тука, го имаш во App */}
-            </div>
+            <h1 className="text-xl font-semibold">{t("searchBooks")}</h1>
+            <div className="bar"></div>
             <div className="result">
               <p className="mt-2 text-gray-600">
-                Showing results for: <span className="font-bold">{query}</span>
+                {t("showingResults")} <span className="font-bold">{query}</span>
               </p>
             </div>
           </div>
         )}
 
-        {/* Ако резултатите се вчитуваат, покажи скелети */}
         {loadingSearch ? (
           <div className="loader-container">
             {Array.from({ length: 20 }).map((_, i) => (
@@ -137,7 +125,6 @@ export default function Home() {
           </div>
         ) : fullSearchResults.length > 0 ? (
           <>
-            {/* Резултати од пребарување (SearchBookCard) */}
             <div className="search-results-vertical">
               {pageResults.map((book) => (
                 <SearchBookCard
@@ -152,7 +139,6 @@ export default function Home() {
               ))}
             </div>
 
-            {/* Пагинација */}
             {totalPages > 1 && (
               <div className="pagination">
                 {Array.from({ length: totalPages }).map((_, i) => {
@@ -174,37 +160,37 @@ export default function Home() {
           !query && (
             <div ref={categoriesRef}>
               <CategoryRow
-                title="Trending Books"
+                title={t("categories.trending")}
                 books={trending}
                 loading={loadingSections}
                 itemsPerPage={5}
               />
               <CategoryRow
-                title="Classic Books"
+                title={t("categories.classics")}
                 books={classics}
                 loading={loadingSections}
                 itemsPerPage={5}
               />
               <CategoryRow
-                title="Romance"
+                title={t("categories.romance")}
                 books={romance}
                 loading={loadingSections}
                 itemsPerPage={5}
               />
               <CategoryRow
-                title="Kids"
+                title={t("categories.kids")}
                 books={kids}
                 loading={loadingSections}
                 itemsPerPage={5}
               />
               <CategoryRow
-                title="Thrillers"
+                title={t("categories.thrillers")}
                 books={thrillers}
                 loading={loadingSections}
                 itemsPerPage={5}
               />
               <CategoryRow
-                title="Textbooks"
+                title={t("categories.textbooks")}
                 books={textbooks}
                 loading={loadingSections}
                 itemsPerPage={5}
@@ -216,6 +202,7 @@ export default function Home() {
     </div>
   );
 }
+
 
 
 

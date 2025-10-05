@@ -57,15 +57,15 @@ const SearchBookCard: React.FC<SearchBookCardProps> = ({
         <img src={coverUrl} alt={title} className="search-card-cover" />
         <div className="search-card-info">
           <h3 className="search-card-title">{title}</h3>
-          <p className="search-card-author">by {author}</p>
-          {year && <p className="search-card-year">First published {year}</p>}
+          <p className="search-card-author">{t("byAuthor", { authors: author })}</p>
+          {year && <p className="search-card-year">{t("firstPublished", { year })}</p>}
         </div>
         <div className="search-card-btn-wrapper">
           <button
             className={`search-card-btn ${isReading ? "reading" : ""}`}
             onClick={handleReading}
           >
-            {isReading ? t("Reading") : t("Read")}
+            {isReading ? t("Reading") : t("read")}
           </button>
         </div>
       </div>

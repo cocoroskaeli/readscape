@@ -3,9 +3,11 @@ import { useState, useEffect } from "react";
 import { getBookDetails, fetchAuthorName } from "../api";
 import { useShelfStore } from "../store/shelfStore";
 import toast from "react-hot-toast";
+import { useTranslation } from "react-i18next";
 
 export default function BookDetails() {
   const { id } = useParams<{ id: string }>();
+  const { t } = useTranslation();
   const bookKey = `/works/${id}`;
   const [book, setBook] = useState<any>(null);
   const [authors, setAuthors] = useState<string[]>([]);
@@ -41,12 +43,12 @@ export default function BookDetails() {
 
   const handleToggleWant = () => {
     if (isReading || isFinished) {
-      toast.error("Cannot add to Want: already in Reading or Finished");
+      toast.error(t("cannotAddWant"));
       return;
     }
     if (isWanted) {
       removeBook("want", bookKey);
-      toast.success("Removed from Want to Read ♥");
+      toast.success(t("removedFromWant"));
     } else {
       addBook("want", {
         key: bookKey,
@@ -54,7 +56,7 @@ export default function BookDetails() {
         author: authors.join(", "),
         coverId: book.covers?.[0],
       });
-      toast.success("Added to Want to Read ♥");
+      toast.success(t("addedToWant"));
     }
   };
 
@@ -69,27 +71,27 @@ export default function BookDetails() {
       coverId: book.covers?.[0],
     });
     if (lastAction === "added") {
-      toast.success("Added to Reading, Removed from Want");
+      toast.success(t("movedToReading"));
     } else if (lastAction === "exists") {
-      toast.error("Already in shelf");
+      toast.error(t("alreadyInShelf"));
     }
   };
 
   const handleSetRating = (star: number) => {
     setRating(star);
     localStorage.setItem(`rating_${id}`, String(star));
-    toast(`You rated this book ${star} star${star > 1 ? "s" : ""}!`);
+    toast(t("ratedBook", { star }));
   };
 
   if (!book) {
     return (
       <div className="center-container" style={{ minHeight: "340px" }}>
-        <p>Loading ...</p>
+        <p>{t("loading")}</p>
       </div>
     );
   }
 
-  let desc = "No description available.";
+  let desc = t("noDescription");
   if (book.description) {
     if (typeof book.description === "string") {
       desc = book.description;
@@ -106,19 +108,11 @@ export default function BookDetails() {
   return (
     <div className="center-container details-center">
       <div className="book-info-flex">
-        <div
-          className="book-cover-col"
-          style={{
-            position: "relative",
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-          }}
-        >
+        <div className="book-cover-col" style={{ position: "relative", display: "flex", flexDirection: "column", alignItems: "center" }}>
           <button
             onClick={handleToggleWant}
             className={`heart-button ${isWanted ? "wanted" : ""}`}
-            aria-label="Toggle Want to Read"
+            aria-label={t("toggleWant")}
             style={{ position: "absolute", top: "8px", left: "8px", zIndex: 2 }}
           >
             ♥
@@ -131,20 +125,17 @@ export default function BookDetails() {
               type="button"
               style={{ marginTop: "10px" }}
             >
-              {isReading ? "Reading" : "Read"}
+              {isReading ? t("Reading") : t("read")}
             </button>
           )}
-          <div
-            className="rating-stars"
-            style={{ marginTop: "18px", display: "flex" }}
-          >
+          <div className="rating-stars" style={{ marginTop: "18px", display: "flex" }}>
             {[1, 2, 3, 4, 5].map((num) => (
               <span
                 key={num}
                 className={`star ${num <= rating ? "filled" : ""}`}
                 onClick={() => handleSetRating(num)}
                 role="button"
-                aria-label={`Rate ${num} star`}
+                aria-label={t("rateStar", { star: num })}
                 style={{
                   cursor: "pointer",
                   fontSize: 28,
@@ -163,7 +154,7 @@ export default function BookDetails() {
         <div className="book-details-col">
           <h1 className="book-title-details">{book.title}</h1>
           {authors.length > 0 && (
-            <p className="book-author-details">by {authors.join(", ")}</p>
+            <p className="book-author-details">{t("byAuthor", { authors: authors.join(", ") })}</p>
           )}
           <p className="book-desc-details">{desc}</p>
         </div>

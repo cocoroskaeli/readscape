@@ -19,7 +19,6 @@ export default function BookCard({ title, author, year, coverId, bookKey, active
   const lastAction = useShelfStore((state) => state.lastAction);
   const shelf = useShelfStore((state) => state.shelf);
 
-  // ✅ користиме исто bookKey како и во BookDetails
   const isWanted = shelf.want.some((book) => book.key === bookKey);
   const isReading = shelf.reading.some((book) => book.key === bookKey);
   const isFinished = shelf.finished.some((book) => book.key === bookKey);
@@ -33,13 +32,13 @@ export default function BookCard({ title, author, year, coverId, bookKey, active
     e.stopPropagation();
 
     if (isReading || isFinished) {
-      toast.error(t("Cannot add to want: already in reading or finished"));
+      toast.error(t("cannotAddToWant"));
       return;
     }
 
     if (isWanted) {
       removeBook("want", bookKey);
-      toast.success(t("removed from") + " ♥");
+      toast.success(t("removedFrom") + " ♥");
     } else {
       addBook("want", { key: bookKey, title, author, year, coverId });
       toast.success(t("addedTo") + " ♥");
@@ -61,7 +60,7 @@ export default function BookCard({ title, author, year, coverId, bookKey, active
   const handleFinish = () => {
     removeBook("reading", bookKey);
     addBook("finished", { key: bookKey, title, author, year, coverId });
-    toast.success(t("Moved to Finished"));
+    toast.success(t("movedToFinished"));
   };
 
   return (
@@ -82,11 +81,11 @@ export default function BookCard({ title, author, year, coverId, bookKey, active
 
       {activeTab === "reading" ? (
         <button className="btn-reading reading" onClick={handleFinish} type="button">
-          {t("Finish")}
+          {t("finish")}
         </button>
       ) : activeTab === "finished" ? (
         <button className="btn-reading reading" disabled type="button">
-          {t("Finished")}
+          {t("finished")}
         </button>
       ) : (
         <button
@@ -94,14 +93,9 @@ export default function BookCard({ title, author, year, coverId, bookKey, active
           onClick={handleReading}
           type="button"
         >
-          {isReading ? t("Reading") : t("read")}
+          {isReading ? t("reading") : t("read")}
         </button>
       )}
     </div>
   );
 }
-
-
-
-
-

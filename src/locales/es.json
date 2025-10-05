@@ -13,6 +13,45 @@
    "noResults": "No se encontraron resultados",
   "unknown": "Desconocido",
   "noBooksYet": "Aún no hay libros",
-  "unknownAuthor": "Autor desconocido"
+  "unknownAuthor": "Autor desconocido",
+  "categories": {
+    "trending": "Libros Populares",
+    "classics": "Clásicos",
+    "romance": "Romance",
+    "kids": "Niños",
+    "thrillers": "Suspenso",
+    "textbooks": "Libros de Texto"
+  },
+  "searchBooks": "Buscar libros",
+"showingResults": "Mostrando resultados para:",
+"errorFetch": "Error al obtener los datos",
+"welcomeTitle": "Bienvenido a Readscape",
+"card1Title": "Descubre y Explora",
+"card1Text": "Descubre tu próximo libro favorito aquí. Explora categorías, libros populares y mucho más.",
+"card2Title": "Explora y Disfruta",
+"card2Text": "Encuentra libros de varios géneros y temas adaptados para ti.",
+"card3Title": "Administra tu Estantería",
+"card3Text": "Puedes organizar tus libros en una estantería personal y seguir tu recorrido de lectura.",
+"cannotAddToWant": "No se puede añadir a 'Quiero': ya está en Leyendo o Terminado",
+"removedFrom": "Eliminado de",
+"movedToFinished": "Movido a Terminado",
+"finish": "Terminar",
+"loading": "Cargando ...",
+"noDescription": "No hay descripción disponible.",
+"cannotAddWant": "No se puede añadir a Quiero Leer: ya está en Leyendo o Terminado",
+"removedFromWant": "Eliminado de Quiero Leer ♥",
+"addedToWant": "Añadido a Quiero Leer ♥",
+"movedToReading": "Añadido a Leyendo, Eliminado de Quiero Leer",
+"ratedBook": "¡Has valorado este libro con {{star}} estrella{{star > 1 ? 's' : ''}}!",
+"toggleWant": "Alternar Quiero Leer",
+"rateStar": "Valorar con {{star}} estrella",
+"byAuthor": "por {{authors}}",
+"firstPublished": "Publicado por primera vez en {{year}}",
+"read": "Leer",
+"Reading": "Leyendo"
+
+
+
+
 
 }

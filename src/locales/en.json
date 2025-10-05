@@ -15,5 +15,42 @@
   "unknown": "Unknown",
    "noBooksYet": "No books yet",
   "unknownAuthor": "Unknown Author",
-  "removed from": "Removed from"
+  "removed from": "Removed from",
+  "categories": {
+    "trending": "Trending Books",
+    "classics": "Classics",
+    "romance": "Romance",
+    "kids": "Kids",
+    "thrillers": "Thrillers",
+    "textbooks": "TextBooks"
+  },
+  "searchBooks": "Search books",
+  "showingResults": "Showing results for:",
+  "errorFetch": "Error fetching data",
+  "welcomeTitle": "Welcome to Readscape",
+"card1Title": "Discover and Explore",
+"card1Text": "Discover your next favorite book here. Browse categories, trending books, and much more.",
+"card2Title": "Explore and Enjoy",
+"card2Text": "Find books across various genres and subjects tailored for you.",
+"card3Title": "Manage Your Shelf",
+"card3Text": "You can organize your books in a personal shelf and keep track of your reading journey.",
+"cannotAddToWant": "Cannot add to want: already in reading or finished",
+"removedFrom": "Removed from",
+"movedToFinished": "Moved to Finished",
+"finish": "Finish",
+"loading": "Loading ...",
+"noDescription": "No description available.",
+"cannotAddWant": "Cannot add to Want: already in Reading or Finished",
+"removedFromWant": "Removed from Want to Read ♥",
+"addedToWant": "Added to Want to Read ♥",
+"movedToReading": "Added to Reading, Removed from Want",
+"ratedBook": "You rated this book {{star}} star{{star > 1 ? 's' : ''}}!",
+"toggleWant": "Toggle Want to Read",
+"rateStar": "Rate {{star}} star",
+"byAuthor": "by {{authors}}",
+"firstPublished": "First published {{year}}",
+"Reading": "Reading"
+
+
+
 }
