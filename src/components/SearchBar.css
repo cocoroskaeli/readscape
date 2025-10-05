@@ -27,7 +27,7 @@
   font-size: 1rem;
   width: 100%;
   background: transparent;
-  color: #000;
+  color: "var(--text-color)"
 }
 :root {
   --bg-color: #ffffff;
@@ -40,4 +40,16 @@
   --text-color: #f0f0f0;
    --main-bg-color: #121212; /* tamna pozadina */
   --main-text-color: #f0f0f0; /* svetol tekst */
+}
+.search-bar,
+.search-text,
+.search-query {
+  color: #222; /* default za light mode */
+}
+
+/* DARK MODE: Promeni boja na tekst */
+body[data-theme='dark'] .search-bar,
+body[data-theme='dark'] .search-text,
+body[data-theme='dark'] .search-query {
+  color: #fff !important;  /* Bela ili svetla boja za tekst vo dark mode */
 }

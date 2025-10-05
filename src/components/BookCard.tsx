@@ -16,7 +16,6 @@ export default function BookCard({ title, author, year, coverId, bookKey, active
   const { t } = useTranslation();
   const addBook = useShelfStore((state) => state.addBook);
   const removeBook = useShelfStore((state) => state.removeBook);
-  const lastAction = useShelfStore((state) => state.lastAction);
   const shelf = useShelfStore((state) => state.shelf);
 
   const isWanted = shelf.want.some((book) => book.key === bookKey);
@@ -46,15 +45,16 @@ export default function BookCard({ title, author, year, coverId, bookKey, active
   };
 
   const handleReading = () => {
+    if (isReading) {
+      toast.error(t("alreadyInShelf"));
+      return;
+    }
+
     if (isWanted) {
       removeBook("want", bookKey);
     }
     addBook("reading", { key: bookKey, title, author, year, coverId });
-    if (lastAction === "added") {
-      toast.success(t("addedTo") + " " + t("reading"));
-    } else if (lastAction === "exists") {
-      toast.error(t("alreadyInShelf"));
-    }
+    toast.success(t("addedTo") + " " + t("reading"));
   };
 
   const handleFinish = () => {
@@ -64,7 +64,7 @@ export default function BookCard({ title, author, year, coverId, bookKey, active
   };
 
   return (
-    <div className="book-card bg-white dark:bg-gray-700 text-black dark:text-white p-4 rounded shadow"  style={{ backgroundColor: "var(--bg-color)", color: "var(--text-color)" }}>
+    <div className="book-card bg-white dark:bg-gray-700 text-black dark:text-white p-4 rounded shadow" style={{ backgroundColor: "var(--bg-color)", color: "var(--text-color)" }}>
       <div className="image-wrapper" style={{ position: "relative" }}>
         <Link to={`/book/${bookKey.replace("/works/", "")}`}>
           <img src={coverUrl} alt={title} className="book-cover-image" />

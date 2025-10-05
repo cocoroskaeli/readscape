@@ -11,7 +11,7 @@ interface SearchBookCardProps {
   coverId?: number;
   year?: number;
   bookKey: string;
-  onReadClick?: () => void; // ќе се користи ако сакаш дополнителна логика
+  onReadClick?: () => void;
 }
 
 const SearchBookCard: React.FC<SearchBookCardProps> = ({
@@ -25,7 +25,6 @@ const SearchBookCard: React.FC<SearchBookCardProps> = ({
   const { t } = useTranslation();
 
   const addBook = useShelfStore((state) => state.addBook);
-  const lastAction = useShelfStore((state) => state.lastAction);
   const shelf = useShelfStore((state) => state.shelf);
 
   const [isReading, setIsReading] = useState(false);
@@ -41,13 +40,13 @@ const SearchBookCard: React.FC<SearchBookCardProps> = ({
   const handleReading = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     e.stopPropagation();
-    addBook("reading", { key: bookKey, title, author, year, coverId });
-    if (lastAction === "added") {
-      toast.success(t("addedTo") + " " + t("reading"));
-      setIsReading(true);
-    } else if (lastAction === "exists") {
+    if (isReading) {
       toast.error(t("alreadyInShelf"));
+      return;
     }
+    addBook("reading", { key: bookKey, title, author, year, coverId });
+    toast.success(t("addedTo") + " " + t("reading"));
+    setIsReading(true);
     if (onReadClick) onReadClick();
   };
 

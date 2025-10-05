@@ -27,7 +27,7 @@ export default function SearchBar({ onSearch, initialValue = "" }: SearchBarProp
       <span className="search-icon">🔍</span>
       <input
         type="text"
-        className="search-input"
+        className="search-input" style={{ backgroundColor: "var(--bg-color)", color: "var(--text-color)" }}
         placeholder={t("searchPlaceholder")}
         value={input}
         onChange={(e) => setInput(e.target.value)}
